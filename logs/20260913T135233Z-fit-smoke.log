@@ -1,0 +1,39 @@
+# experiment: fit-smoke
+# started:    20260913T135233Z
+# host:       homedev-lan
+# command:    bench/fit.py --budget 6 --population 3 --seeds 1 --seconds 0.4 --out out/fit_smoke.json
+# code:       53bba21
+
+7 parameters, 6 targets to fit, 3 held out
+   w_syn        [0.01, 1] log   published 0.275 (fitted there, against a female connectome); our earlier fit 0.075
+   inh_gain     [0.5, 16] log   inhibition relative to excitation per synapse; balanced-network models commonly use 4-8
+   tau_syn      [1, 15]   published 5 ms; ionotropic GABA and GABA-B differ by 10-100x, which one constant cannot represent
+   v_th         [4, 12]   published threshold sits 7 mV above rest
+   sigma        [0, 0.4]   background noise. Ours, not the published model's, which has none -- so it is fitted rather than assumed
+   tau_mem      [10, 40]   published 20 ms, applied to every cell
+   tau_mem_kc   [150, 500]   Kenyon cells are measured at >200 ms, a lower bound. Searched below it too, so the fit can disagree with the measurement visibly rather than silently
+
+budget 6 evaluations, 1 seeds each, 0.4 s per run
+
+  [   1] fit   5.549  holdout   2.302   w_syn=0.119  inh_gain=2.47  tau_syn=10.7  v_th=8.25  sigma=0.136  tau_mem=28.3  tau_mem_kc=462
+  [   5] fit   3.791  holdout   0.790   w_syn=0.0269  inh_gain=2.19  tau_syn=4.6  v_th=7.32  sigma=0.176  tau_mem=35.5  tau_mem_kc=406
+
+6 evaluations in 0.2 min (1.6 s each)
+parameter sets satisfying every fitted target: 0 of 6
+
+best fitted score 3.791, held-out score at that point 0.790
+  target by target:
+    [fit ] T-MB-13      kc_recruited_pct         got        46  want      = 6.0  miss  7.99
+    [fit ] T-MB-01/02   apl_block_delta_pp       got      1.89  want    >= 20.0  miss  1.81
+    [fit ] T-MB-09      apl_rate_hz              got      47.5  want     <= 5.0  miss  8.50
+    [fit ] T-WB-3       kc_baseline_hz           got       1.6  want     <= 0.5  miss  2.20
+    [fit ] T-AL-16      pn_peak_hz               got      56.2  want    = 160.0  miss  1.73
+    [fit ] internal     spontaneous_hz           got     0.232  want      = 1.0  miss  0.51
+    [HELD] T-AL-19      ln_rate_hz               got      1.45  want    <= 60.0  miss  0.00
+    [HELD] T-WB-2       pn_gap_in_sd             got      4.59  want     <= 3.0  miss  0.80
+    [HELD] T-WB-1       silent_fraction_pct      got      91.4  want    <= 60.0  miss  1.57
+
+wrote out/fit_smoke.json
+
+# exit status: 0
+# finished:    20260913T135245Z

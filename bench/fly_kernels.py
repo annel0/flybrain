@@ -20,6 +20,10 @@ sensory cells while the rest of the network receives only a small baseline.
 Whether activity then reaches the central brain is the question, not an
 assumption.
 
+**Per-cell membrane constants.** `ALPHA` is dt divided by each cell's own
+membrane time constant, not a scalar, because the measured values differ
+between cell types by more than an order of magnitude.
+
 **Noise.** A constant background cannot produce graded spontaneous activity:
 a cell sits either above threshold and fires forever or below it and never
 fires, which is exactly the silent-majority/hot-minority split the first runs
@@ -35,8 +39,8 @@ RING_SLOTS = 32          # must exceed the largest delay in steps
 
 
 @triton.jit
-def membrane_delay(U, G, R, TONIC, FORCE, GRADED, DELAY, RING, RING_CNT,
-                   n, cap, t, decay, alpha, u_reset, u_th, refrac_steps,
+def membrane_delay(U, G, R, TONIC, FORCE, GRADED, ALPHA, DELAY, RING, RING_CNT,
+                   n, cap, t, decay, u_reset, u_th, refrac_steps,
                    sigma, seed, BLOCK: tl.constexpr, D: tl.constexpr):
     b = tl.program_id(1)
     n_off = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
@@ -48,6 +52,10 @@ def membrane_delay(U, G, R, TONIC, FORCE, GRADED, DELAY, RING, RING_CNT,
     r = tl.load(R + offs, mask=nmask, other=0)
     drive = tl.load(TONIC + n_off, mask=nmask, other=0.0).to(tl.float32)
 
+    # Membrane time constant is per cell: it is measured to differ by an
+    # order of magnitude between types (Kenyon cells >200 ms against ~20 ms
+    # for the generic value), so it cannot be one number for the population.
+    alpha = tl.load(ALPHA + n_off, mask=nmask, other=0.0).to(tl.float32)
     g = g * decay
     live = r == 0
     noise = tl.randn(seed + t, offs) * sigma   # fresh stream each step

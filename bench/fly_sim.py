@@ -48,7 +48,8 @@ class FlySim:
                  delays="data/malecns_v1/delays.npz", device="cuda",
                  scale=P.WEIGHT_PER_SYNAPSE_MV, cap=1 << 14, batch=1,
                  delay_mode="published", min_synapses=1, inh_gain=1.0,
-                 dt=DT):
+                 dt=DT, tau_mem=None, tau_syn=None, v_th=None,
+                 tau_mem_by_type=None, delay_ms=None):
         z = np.load(graph, allow_pickle=False)
         crow, col, val, _ = load_graph(graph)
         self.n = n = len(crow) - 1
@@ -79,7 +80,8 @@ class FlySim:
         # is recomputed here so the discretisation can be varied and checked.
         self.dt = float(dt)
         if delay_mode == "published":
-            d = np.full(n, int(round(P.DELAY_MS / self.dt)), dtype=np.int16)
+            base = P.DELAY_MS if delay_ms is None else float(delay_ms)
+            d = np.full(n, max(1, int(round(base / self.dt))), dtype=np.int16)
         else:
             ms = np.load(delays, allow_pickle=False)["delay_ms"]
             d = np.maximum(1, np.round(ms / self.dt)).astype(np.int16)
@@ -107,8 +109,24 @@ class FlySim:
         self.graded_gain = 0.0
         self.graded_ring = None
         self.refrac_steps = int(round(REFRAC_MS / self.dt))
-        self.decay = float(np.exp(-self.dt / TAU_S))
-        self.alpha = self.dt / TAU_M
+        self.tau_syn = float(tau_syn if tau_syn is not None else TAU_S)
+        self.tau_mem = float(tau_mem if tau_mem is not None else TAU_M)
+        self.u_th = float(v_th if v_th is not None else U_TH)
+        self.decay = float(np.exp(-self.dt / self.tau_syn))
+
+        # Per-cell membrane time constant, so measured per-type values can be
+        # substituted instead of fitted. Keys are matched as cell_type
+        # prefixes; anything unmatched keeps the global value.
+        taus = np.full(n, self.tau_mem, dtype=np.float32)
+        self.tau_overrides = {}
+        if tau_mem_by_type:
+            for prefix, tau in tau_mem_by_type.items():
+                m = np.char.startswith(self.cell_type, prefix)
+                if m.any():
+                    taus[m] = float(tau)
+                    self.tau_overrides[prefix] = (float(tau), int(m.sum()))
+        self.tau_mem_per_cell = taus
+        self.alpha = torch.from_numpy(self.dt / taus).to(self.dev)
         self.grid_m = (triton.cdiv(n, BLOCK), batch)
         self.t = 0
 
@@ -171,10 +189,10 @@ class FlySim:
     def step(self, tonic, record=False):
         slot = self.t % self.ring_slots
         membrane_delay[self.grid_m](
-            self.u, self.g, self.r, tonic, self.force, self.graded, self.delay,
-            self.ring, self.ring_cnt,
-            self.n, self.cap, self.t, float(self.decay), float(self.alpha),
-            float(U_RESET), float(U_TH), self.refrac_steps,
+            self.u, self.g, self.r, tonic, self.force, self.graded,
+            self.alpha, self.delay, self.ring, self.ring_cnt,
+            self.n, self.cap, self.t, float(self.decay),
+            float(U_RESET), float(self.u_th), self.refrac_steps,
             float(self.sigma), int(self.seed), BLOCK=BLOCK, D=self.ring_slots)
         deliver[(GRID, LANES)](
             self.ring, self.ring_cnt, self.crow, self.col, self.val, self.g,
@@ -214,7 +232,7 @@ class FlySim:
         idx = np.flatnonzero(mask)
         self.graded[torch.from_numpy(idx).to(self.dev)] = 1
         self.graded_idx = torch.from_numpy(idx.astype(np.int32)).to(self.dev)
-        self.graded_gain = reference_hz / max(U_TH, 1e-6)
+        self.graded_gain = reference_hz / max(self.u_th, 1e-6)
         self.graded_ring = torch.zeros(self.ring_slots * len(idx),
                                        device=self.dev)
         return len(idx)
