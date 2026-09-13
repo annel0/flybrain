@@ -80,6 +80,10 @@ def main():
     ap.add_argument("--seeds", type=int, default=2)
     ap.add_argument("--seconds", type=float, default=0.6)
     ap.add_argument("--sigma0", type=float, default=0.30)
+    ap.add_argument("--explore", type=int, default=0,
+                    help="evaluations spent on a uniform sample before the "
+                         "search, to measure the feasible region rather than "
+                         "where the search happened to converge")
     ap.add_argument("--out", default="out/fit.json")
     a = ap.parse_args()
 
@@ -93,10 +97,40 @@ def main():
           f"{a.seconds:g} s per run\n")
 
     rng = np.random.default_rng(0)
-    mean = np.full(d, 0.5)
-    sigma = a.sigma0
     history, best = [], None
     used, t0 = 0, time.perf_counter()
+
+    # Phase one: a Latin hypercube over the whole box. The search that follows
+    # necessarily converges, so its spread measures where it went rather than
+    # what the data allows; only a sample drawn independently of the objective
+    # can answer that.
+    if a.explore:
+        print(f"phase 1: {a.explore} evaluations sampled uniformly, to measure "
+              f"the feasible region\n")
+        cuts = (rng.permuted(np.tile(np.arange(a.explore), (d, 1)), axis=1).T
+                + rng.random((a.explore, d))) / a.explore
+        for x in cuts:
+            if used >= a.budget:
+                break
+            params = decode(x)
+            obs, fit, hold, err = evaluate(params, a.graph, a.seeds, a.seconds)
+            used += 1
+            rec = {"eval": used, "phase": "explore", "x": x.tolist(),
+                   "params": params, "fit_score": fit, "holdout_score": hold,
+                   "observables": obs, "error": err}
+            history.append(rec)
+            if best is None or fit < best["fit_score"]:
+                best = rec
+            if used % 25 == 0:
+                print(f"  [{used:4d}] sampled, best so far {best['fit_score']:.3f}",
+                      flush=True)
+        n_feas = sum(1 for h in history if h["observables"] and all(
+            T.score(t, h["observables"].get(t["obs"])) <= 1.0 for t in T.fit_targets()))
+        print(f"\n  uniform sample: {n_feas} of {used} satisfy every fitted "
+              f"target\n\nphase 2: converging search\n")
+
+    mean = np.full(d, 0.5)
+    sigma = a.sigma0
 
     while used < a.budget:
         pop = np.clip(mean + sigma * rng.standard_normal((a.population, d)), 0, 1)
@@ -107,15 +141,16 @@ def main():
             params = decode(x)
             obs, fit, hold, err = evaluate(params, a.graph, a.seeds, a.seconds)
             used += 1
-            rec = {"eval": used, "x": x.tolist(), "params": params,
-                   "fit_score": fit, "holdout_score": hold,
+            rec = {"eval": used, "phase": "search", "x": x.tolist(),
+                   "params": params, "fit_score": fit, "holdout_score": hold,
                    "observables": obs, "error": err}
             history.append(rec)
             scored.append((fit, x))
             if best is None or fit < best["fit_score"]:
                 best = rec
                 print(f"  [{used:4d}] fit {fit:7.3f}  holdout {hold:7.3f}   "
-                      + "  ".join(f"{k}={v:.3g}" for k, v in params.items()))
+                      + "  ".join(f"{k}={v:.3g}" for k, v in params.items()),
+                      flush=True)
         if not scored:
             break
         scored.sort(key=lambda z: z[0])
@@ -128,11 +163,15 @@ def main():
           f"({wall/max(used,1):.1f} s each)")
 
     ok = [h for h in history if h["observables"]]
-    feasible = [h for h in ok
+    # The feasible region is measured on the uniform sample where one exists;
+    # the search's own points are excluded because it converges by design.
+    pool = [h for h in ok if h.get("phase") == "explore"] or ok
+    feasible = [h for h in pool
                 if all(T.score(t, h["observables"].get(t["obs"])) <= 1.0
                        for t in T.fit_targets())]
+    src = "uniform sample" if pool is not ok else "all evaluations"
     print(f"parameter sets satisfying every fitted target: {len(feasible)} "
-          f"of {len(ok)}")
+          f"of {len(pool)} ({src})")
     if feasible:
         print("  the feasible range of each parameter (this is the degeneracy):")
         for spec in T.PARAMS:

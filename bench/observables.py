@@ -24,7 +24,16 @@ def _masks(sim, glom):
     )
 
 
-def observe(sim, glom="DA1", poisson_hz=150.0, seconds=0.6, membrane_samples=40):
+def _kc_set(sim, orn_mask, kc_mask, poisson_hz, seconds):
+    """Which Kenyon cells an odour recruits, as a boolean mask."""
+    sim.reset()
+    sim.set_poisson(orn_mask, poisson_hz)
+    r = sim.run(seconds * 1000)[0]
+    return r[kc_mask] > KC_THRESHOLD_HZ
+
+
+def observe(sim, glom="DA1", second_glom="VA1v", poisson_hz=150.0,
+            seconds=0.6, membrane_samples=40):
     """Run the standard battery and return every observable the targets need."""
     m = _masks(sim, glom)
     out = {}
@@ -78,6 +87,26 @@ def observe(sim, glom="DA1", poisson_hz=150.0, seconds=0.6, membrane_samples=40)
     others = [v for v in pn_rates if v not in own]
     med = float(np.median(others)) if others else 0.0
     out["selectivity"] = (max(own) / med) if (own and med > 0.01) else float("nan")
+
+    # Two different odours should recruit largely separate Kenyon cell
+    # populations -- that decorrelation is what the mushroom body is for, and
+    # blocking APL is reported to raise the correlation between them. Measured
+    # against chance, so a model that simply recruits few cells cannot score
+    # well by accident.
+    ct2 = np.char.startswith(sim.cell_type, f"ORN_{second_glom}")
+    if ct2.any():
+        a = r[m["kc"]] > KC_THRESHOLD_HZ
+        b = _kc_set(sim, ct2, m["kc"], poisson_hz, seconds)
+        na, nb = int(a.sum()), int(b.sum())
+        if na and nb:
+            overlap = float((a & b).sum())
+            chance = na * nb / max(len(a), 1)
+            out["kc_odor_overlap"] = overlap / max(chance, 1e-9)
+        else:
+            out["kc_odor_overlap"] = float("nan")
+        out["kc_recruited_second_pct"] = 100.0 * nb / max(len(a), 1)
+    else:
+        out["kc_odor_overlap"] = float("nan")
 
     # --- the causal test: block APL's output ----------------------------
     if m["apl"].any():
