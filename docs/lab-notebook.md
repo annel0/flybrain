@@ -571,3 +571,72 @@ carry **no information at all** about what the held-out ones measure.
 The held-out split is the only reason any of this was visible. Reported on its
 fitted targets alone this run looks like a success: six of six satisfied, score
 0.097.
+
+---
+
+## 2026-09-13 — The escape circuit cannot fire, and the arithmetic says why
+
+**Why this test:** every target the fitter uses is a firing rate, which is why
+the delay parameter is invisible to it. The giant fibre pathway is the one
+place in the fly where conduction times are measured directly and every link
+is named and present in our connectome, so it is the only timing constraint
+available. Two paths differ by exactly one synapse: GF→TTMn measured at
+0.93-1.46 ms, GF→PSI→DLMn at 1.44-1.85 ms. Our model charges one fixed delay
+per connection, so it must say the second path costs 2.00x the first; the
+animal says 1.37x. That was the structural claim under test.
+
+**The anatomy is right.** TTMn is the giant fibre's strongest chemical target —
+70 synapses on one side, 20 on the other, top of its list. The connectome
+identifies the escape circuit correctly.
+
+**Nothing propagates.** No weight tested produced a spike in TTMn, so the
+latency comparison could not be made at all.
+
+### Two of my own bugs first
+
+The drive was set through `set_poisson` at 2000 Hz, which that function
+converts to a per-step probability of 0.2 — so the giant fibre fired on one
+run in five rather than certainly. And the tally counts spikes as *delivered*,
+one axonal delay after emission, so every reading was late by exactly that.
+Latencies are now taken as differences from the driven cell's own recorded
+spike, which cancels the lag.
+
+### Then the real reason
+
+Instrumenting the run shows the spike arriving on schedule and the conductance
+at TTMn jumping to **19.25 mV** — exactly the 70 synapses × 0.275 mV expected.
+The membrane potential then rises to **3.01 mV** and falls back, against a 7 mV
+threshold.
+
+The cause is the ratio of the two published time constants. The membrane
+follows the conductance with τ_m = 20 ms while the conductance itself decays
+with τ_s = 5 ms, so the membrane chases a target that vanishes four times
+faster than it can follow. Analytically the peak is
+`g · τs/(τm−τs) · (e^(−t*/τm) − e^(−t*/τs))` ≈ 3.0 mV; the simulation gives
+3.01.
+
+| τ_m | τ_s | peak g | peak u | fires? |
+|---|---|---|---|---|
+| **20** | **5** (published) | 19.25 | **3.01** | no, 2.3x short |
+| 20 | 20 | 33.6 | 7.00 | yes |
+| 5 | 5 | 58.4 | 7.00 | yes |
+
+**A single synaptic event reaches 16% of its conductance amplitude at the
+membrane.** That is a general property of this model, not something specific to
+the escape circuit, and it is the mechanism behind the earlier finding that one
+spike produces zero descendants: not only weak weights, but a low-pass filter
+that a single event cannot get through.
+
+### What it means
+
+In the animal the GF→TTM connection is largely **electrical** — ShakB gap
+junctions pass current directly, with no synaptic filter and no attenuation.
+That is why escape circuits are built from them.
+
+So our failure to fire the most reliable synapse in the fly nervous system is a
+direct and now quantified consequence of the missing gap junctions: 3 mV where
+7 are needed. Previously that gap was a note in the theory review; it now has a
+number and a circuit attached.
+
+**It also means the latency target cannot be used until gap junctions exist in
+the model.** Recorded as blocked rather than failed.
