@@ -1,0 +1,49 @@
+# experiment: rewire-bisect
+# started:    20260913T133821Z
+# host:       homedev-lan
+# command:    bench/rewire_matched.py --out out/rewire_matched.json
+# code:       087cd4a
+
+real graph at w_syn 0.075: self-sustained 1.005 Hz (1.7% active), KC 5.6%, selectivity 2.32x
+
+degree-preserved null: does a weight exist that gives 1.005 Hz?
+    w_syn  1.0250 ->   146.913 Hz ( 73.3% active)
+    w_syn  0.5375 ->    75.583 Hz ( 64.8% active)
+    w_syn  0.2938 ->     0.322 Hz (  7.7% active)
+    w_syn  0.4156 ->    45.653 Hz ( 57.6% active)
+    w_syn  0.3547 ->    27.053 Hz ( 49.0% active)
+    w_syn  0.3242 ->    14.988 Hz ( 39.2% active)
+    w_syn  0.3090 ->     4.628 Hz ( 23.8% active)
+    w_syn  0.3014 ->     0.441 Hz (  9.9% active)
+    w_syn  0.3052 ->     0.650 Hz ( 12.7% active)
+    w_syn  0.3071 ->     0.905 Hz ( 14.5% active)
+  matched at w_syn 0.307080078125 (0.905 Hz vs real 1.005): KC 1.3%, selectivity nanx
+
+superclass-preserved null: does a weight exist that gives 1.005 Hz?
+    w_syn  1.0250 ->    85.744 Hz ( 52.8% active)
+    w_syn  0.5375 ->    53.806 Hz ( 35.5% active)
+    w_syn  0.2938 ->    30.275 Hz ( 26.1% active)
+    w_syn  0.1719 ->     0.096 Hz (  3.1% active)
+    w_syn  0.2328 ->    21.373 Hz ( 23.5% active)
+    w_syn  0.2023 ->    15.681 Hz ( 21.6% active)
+    w_syn  0.1871 ->    12.111 Hz ( 20.2% active)
+    w_syn  0.1795 ->     0.324 Hz (  6.3% active)
+    w_syn  0.1833 ->    10.808 Hz ( 19.8% active)
+    w_syn  0.1814 ->    10.329 Hz ( 19.6% active)
+    w_syn  0.1804 ->     8.006 Hz ( 19.3% active)
+    w_syn  0.1800 ->     9.930 Hz ( 19.4% active)
+    w_syn  0.1797 ->     0.386 Hz (  7.0% active)
+    w_syn  0.1798 ->     9.694 Hz ( 19.2% active)
+    w_syn  0.1798 ->     8.340 Hz ( 19.2% active)
+    w_syn  0.1798 ->     7.956 Hz ( 19.2% active)
+  matched at w_syn 0.17973022460937502 (0.386 Hz vs real 1.005): KC 0.8%, selectivity nanx
+
+at matched spontaneous activity:
+  real                               w 0.075  self  1.005 Hz   KC   5.6%   selectivity  2.32x
+  degree-preserved, activity-matched w 0.307  self  0.905 Hz   KC   1.3%   selectivity   nanx
+  superclass-preserved, activity-matched w 0.180  self  0.386 Hz   KC   0.8%   selectivity   nanx   [NO MATCHING WEIGHT FOUND]
+
+wrote out/rewire_matched.json
+
+# exit status: 0
+# finished:    20260913T133904Z

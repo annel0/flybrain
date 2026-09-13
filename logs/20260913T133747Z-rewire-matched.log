@@ -1,0 +1,32 @@
+# experiment: rewire-matched
+# started:    20260913T133747Z
+# host:       homedev-lan
+# command:    bench/rewire_matched.py
+# code:       087cd4a
+
+real graph at w_syn 0.075: self-sustained 1.005 Hz (1.7% active), KC 5.6%, selectivity 2.32x
+
+degree-preserved null, raising w_syn to match 1.005 Hz:
+    w_syn  0.075 ->   0.008 Hz (  0.3% active)
+    w_syn  0.100 ->   0.009 Hz (  0.3% active)
+    w_syn  0.150 ->   0.017 Hz (  0.4% active)
+    w_syn  0.250 ->   0.090 Hz (  2.1% active)
+    w_syn  0.400 ->  41.598 Hz ( 56.2% active)
+  matched at w_syn 0.25 (0.090 Hz vs real 1.005): KC 0.7%, selectivity 230769231.92x
+
+superclass-preserved null, raising w_syn to match 1.005 Hz:
+    w_syn  0.075 ->   0.008 Hz (  0.3% active)
+    w_syn  0.100 ->   0.009 Hz (  0.4% active)
+    w_syn  0.150 ->   0.018 Hz (  0.7% active)
+    w_syn  0.250 ->  24.101 Hz ( 24.3% active)
+  matched at w_syn 0.15 (0.018 Hz vs real 1.005): KC 0.2%, selectivity 0.00x
+
+at matched spontaneous activity:
+  real                               w 0.075  self  1.005 Hz   KC   5.6%   selectivity  2.32x
+  degree-preserved, activity-matched w 0.250  self  0.090 Hz   KC   0.7%   selectivity 230769231.92x
+  superclass-preserved, activity-matched w 0.150  self  0.018 Hz   KC   0.2%   selectivity  0.00x
+
+wrote out/rewire_matched.json
+
+# exit status: 0
+# finished:    20260913T133809Z

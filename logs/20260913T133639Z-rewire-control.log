@@ -1,0 +1,30 @@
+# experiment: rewire-control
+# started:    20260913T133639Z
+# host:       homedev-lan
+# command:    bench/rewire_control.py --seeds 2 --seconds 1
+# code:       087cd4a
+
+166,700 neurons, 25,582,938 connections, w_syn 0.075 mV, inhibitory gain x1
+driving ORN_DA1 at 150 Hz
+
+  real                                 KC   5.6%  APL-block  +83.5pp  selectivity  2.32x  self  1.00 Hz
+  rewired, superclass-preserved #1     KC   0.0%  APL-block   +0.0pp  selectivity  0.00x  self  0.01 Hz
+  rewired, superclass-preserved #2     KC   0.0%  APL-block   +0.0pp  selectivity  0.00x  self  0.01 Hz
+  rewired, degree-preserved #1         KC   0.0%  APL-block   +0.0pp  selectivity  0.00x  self  0.01 Hz
+  rewired, degree-preserved #2         KC   0.0%  APL-block   +0.0pp  selectivity  0.00x  self  0.01 Hz
+
+the real wiring against each null (mean over seeds):
+  KC recruited               real     5.61   superclass null     0.00 +-  0.00
+  APL block effect           real    83.49   superclass null     0.00 +-  0.00
+  own-glomerulus selectivity real     2.32   superclass null     0.00 +-  0.00
+  self-sustained rate        real     1.00   superclass null     0.01 +-  0.00
+
+  KC recruited               real     5.61   degree null     0.00 +-  0.00
+  APL block effect           real    83.49   degree null     0.00 +-  0.00
+  own-glomerulus selectivity real     2.32   degree null     0.00 +-  0.00
+  self-sustained rate        real     1.00   degree null     0.01 +-  0.00
+
+wrote out/rewire_control.json
+
+# exit status: 0
+# finished:    20260913T133705Z

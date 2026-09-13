@@ -1,0 +1,69 @@
+{
+  "neurons": 166700,
+  "edges": 25582938,
+  "w_syn": 0.075,
+  "inh_gain": 1.0,
+  "glomerulus": "DA1",
+  "rows": [
+    {
+      "kc_recruited_pct": 5.610236220472441,
+      "kc_recruited_apl_blocked_pct": 89.0994094488189,
+      "apl_effect_pp": 83.48917322834646,
+      "own_glomerulus_selectivity": 2.317825956972773,
+      "apl_rate_hz": 249.5,
+      "network_mean_hz": 1.0209615230560303,
+      "self_sustained_hz": 1.004709005355835,
+      "self_sustained_active_pct": 1.7126574685062987,
+      "condition": "real",
+      "edges_unchanged_pct": 100.0
+    },
+    {
+      "kc_recruited_pct": 0.0,
+      "kc_recruited_apl_blocked_pct": 0.0,
+      "apl_effect_pp": 0.0,
+      "own_glomerulus_selectivity": 0.0,
+      "apl_rate_hz": 0.0,
+      "network_mean_hz": 9.609840344637632e-05,
+      "self_sustained_hz": 0.00823335349559784,
+      "self_sustained_active_pct": 0.3293341331733653,
+      "condition": "rewired, superclass-preserved #1",
+      "edges_unchanged_pct": 0.028042127139580295
+    },
+    {
+      "kc_recruited_pct": 0.0,
+      "kc_recruited_apl_blocked_pct": 0.0,
+      "apl_effect_pp": 0.0,
+      "own_glomerulus_selectivity": 0.0,
+      "apl_rate_hz": 0.0,
+      "network_mean_hz": 1.201230043079704e-05,
+      "self_sustained_hz": 0.008278344757854939,
+      "self_sustained_active_pct": 0.3311337732453509,
+      "condition": "rewired, superclass-preserved #2",
+      "edges_unchanged_pct": 0.027651241620489406
+    },
+    {
+      "kc_recruited_pct": 0.0,
+      "kc_recruited_apl_blocked_pct": 0.0,
+      "apl_effect_pp": 0.0,
+      "own_glomerulus_selectivity": 0.0,
+      "apl_rate_hz": 0.0,
+      "network_mean_hz": 3.603690129239112e-05,
+      "self_sustained_hz": 0.008038392290472984,
+      "self_sustained_active_pct": 0.3215356928614277,
+      "condition": "rewired, degree-preserved #1",
+      "edges_unchanged_pct": 0.0015948129178908223
+    },
+    {
+      "kc_recruited_pct": 0.0,
+      "kc_recruited_apl_blocked_pct": 0.0,
+      "apl_effect_pp": 0.0,
+      "own_glomerulus_selectivity": 0.0,
+      "apl_rate_hz": 0.0,
+      "network_mean_hz": 0.0,
+      "self_sustained_hz": 0.008158368058502674,
+      "self_sustained_active_pct": 0.32633473305338934,
+      "condition": "rewired, degree-preserved #2",
+      "edges_unchanged_pct": 0.0015987217730817312
+    }
+  ]
+}

@@ -220,3 +220,66 @@ operating point, because the model lacks the thing that sets sparseness.
 **Revised standing:** the balanced regime at w = 1.0, inhibitory gain 8, is the
 better operating point on present evidence, despite the recruitment figure.
 The 0.075 / gain 1 point should not be defended on its 5.6% alone.
+
+---
+
+## 2026-09-13 — The rewired-connectome control, and it passes
+
+**Why:** the Digital Sphinx critique proposes a real-versus-rewired control as
+close to a minimum bar, and of the connectome-based fly models surveyed in
+docs/targets/prior-validation.md exactly one had run it. The rewired graph is
+a control, not a model: built, measured, discarded.
+
+**Two nulls**, both pure permutations of the postsynaptic column, so out-degree
+is untouched and in-degree is preserved exactly. `config` permutes globally;
+`superclass` permutes within the edges pointing at each superclass, preserving
+the superclass-by-superclass connectivity matrix on top of both degrees.
+
+### First run looked too clean, and it was
+
+Every measurement collapsed to exactly zero on both nulls. A dead network fails
+every test trivially, so that reading was worthless until the cause was known.
+Checking input statistics ruled out starvation — rewiring *raises* the median
+neuron's net drive from +29 to +107, because the real graph is skewed and a
+permutation evens it out. The nulls are not starved; the weight was simply
+fitted on the real graph.
+
+A coarse sweep then suggested the nulls had no intermediate regime at all,
+jumping from 0.09 Hz to 41.6 Hz between two sweep points. **That was also
+wrong** — bisection found the intermediate state the sweep had stepped over.
+
+### The fair comparison, at matched spontaneous activity
+
+| | w_syn | self-sustained | cells active | KC recruited | APL block | APL rate |
+|---|---|---|---|---|---|---|
+| **real** | 0.075 | 1.005 Hz | **1.7%** | **5.6%** | **+83.5 pp** | 249.5 Hz |
+| degree-preserved null | 0.307 | 0.905 Hz | 14.5% | 1.3% | **+0.0 pp** | **0.0 Hz** |
+
+At the same mean rate the null spreads activity over eight times as many cells,
+recruits a quarter as many Kenyon cells, produces no measurable projection
+neuron response to stimulating one glomerulus, and **the APL neuron does not
+fire at all**, so the mushroom body's feedback loop is simply absent.
+
+The one causal result this model has passed does not survive rewiring. The
+connectome is doing work beyond its degree sequence.
+
+### What this does not establish
+
+The superclass-preserving null could not be activity-matched. Its transition is
+razor-thin — 0.1797 gives 0.386 Hz and 0.1798 gives 9.694 Hz — and repeated
+evaluations at the same weight returned 9.694, 8.340 and 7.956 Hz, so at the
+edge it is chaotically sensitive to the non-determinism of atomic accumulation.
+That null therefore was not fairly tested, and the question of whether regional
+structure alone suffices is open.
+
+Worth noting for later: the *more* constrained null is the *less* stable one.
+Preserving regional structure without cell-level structure concentrates
+connectivity into strong local loops with none of the specific inhibition that
+regulates them in the real graph.
+
+### One number in the first output was garbage
+
+A selectivity of 230,769,231x came from dividing by a 1e-9 floor when every
+non-target projection neuron was silent. Fixed to report undefined instead.
+Undefined here means the null produced no projection neuron response at all,
+which is a failure rather than perfect selectivity.
