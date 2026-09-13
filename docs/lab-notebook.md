@@ -397,3 +397,53 @@ Behnia et al. 2014 gives millisecond-scale delays and rectification ratios for
 Mi1, Tm3, Tm1 and Tm2. Chiappe et al. 2010 gives walking-state gain changes of
 2.96-6.5x, up to 16x in one animal, with the tuning peak shifting to 6 Hz —
 which is a perturbation target with real numbers attached.
+
+---
+
+## 2026-09-13 — Target collection complete: 222 targets, eleven domains
+
+| domain | targets |
+|---|---|
+| antennal lobe | 35 |
+| escape and motor | 41 |
+| mushroom body | 32 |
+| visual system | 29 |
+| whole brain | 23 |
+| central complex | 22 |
+| male-specific | 20 |
+| Shiu predictions | 12 |
+| prior validation | 8 |
+
+The Shiu row is the shortfall: 12 of the paper's 164 predictions, and the agent
+said so plainly. Those 152 remain the largest single block of causal
+constraints available anywhere and are the obvious next collection job.
+
+### The central complex gives us a real falsification test
+
+This circuit carries a single localised bump of activity that tracks the fly's
+heading. Our model has no mechanism that could produce one, so this is a test
+it can fail cleanly rather than a number it can be tuned toward.
+
+- bump width: FWHM **82-91 degrees** (Seelig & Jayaraman 2015) against **~100
+  degrees** (Turner-Evans et al. 2017) — recorded as a conflict, not averaged
+- persistence in darkness before drift: **6.7 +- 5.1 s** across 499 bouts in 11
+  flies, sometimes beyond 30 s
+- PEN-to-EPG bump offset grows with turning speed to **20.7 +- 11.7 degrees**
+  at 150-180 deg/s — probably the single most useful number for constraining
+  path integration
+- landmark jump tracking: slope **0.78 +- 0.07**, r = 0.85, N = 50 shifts
+- silencing Delta7 drops the bump's amplitude while leaving its width
+  **explicitly unchanged**, so amplitude and width are separately controlled —
+  a structural constraint no single rate can express
+
+### And a fact that reframes the whole collection
+
+The most quantitatively characterised circuit in the fly brain contains
+**exactly one published spike-rate number**: PEN cells modulate by 5.6 +- 3.7 Hz
+between preferred and non-preferred turn directions, N = 12. Everything else in
+it is calcium imaging.
+
+That is the observation-model problem in its sharpest form. We built a spiking
+simulator, and the best-studied circuit available to test it against was almost
+entirely measured in a currency our simulator does not produce. Comparing
+against it requires the indicator model, not a threshold we chose.
