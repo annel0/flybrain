@@ -759,6 +759,67 @@ what sex (or life stage) it actually came from, and what that implies.
 
 ---
 
+## 5. Direct cross-references: female-measured targets already in this collection
+
+Three sibling domain files (`whole-brain.md`, `prior-validation.md`,
+`measurement-protocols.md`) did not exist when this task started and appeared
+in `docs/targets/` while this file was being researched. Reading them after
+the fact turns up concrete, explicitly-female-tagged targets that can be
+named directly rather than warned about only in the abstract — exactly the
+cross-reference the task asked for:
+
+- **`whole-brain.md` T-WB-2 / T-WB-14** — antennal-lobe projection-neuron
+  resting potential (-47.8 mV whole-cell / -57.8 mV cell-attached, N=12),
+  explicitly "adult, female" (Gouwens & Wilson 2009). `whole-brain.md` itself
+  leans on this number for the "how close to threshold do central neurons
+  sit" question that is central to this project's own operating-point work
+  (`lab-notebook.md`), but does not itself flag the sex. The antennal lobe is
+  squarely "sensory periphery" — the part of the brain the MaleCNS paper
+  reports as "largely isomorphic" (T-MALE-6) — so the a priori risk here is
+  plausibly low, but it is unconfirmed low, not verified low.
+- **`whole-brain.md` T-WB-6, T-WB-7, T-WB-8** — Aimon et al. 2023 whole-brain
+  imaging during walking (brain-wide R²=0.194 walk correlation; divergent
+  dopaminergic/octopaminergic vs. serotonergic response; the brain-VNC
+  transection perturbation), explicitly "tethered adult female flies...84
+  adult female flies overall across the study." T-WB-8 is flagged in that
+  file as its strongest single result, and it is a perturbation (surgical),
+  which the README ranks above steady-state numbers — meaning it is exactly
+  the kind of target likely to get reused first. None of these three are
+  courtship/aggression circuits, so lower dimorphism risk than sections 2-3
+  above, but they are brain-wide averages, and T-MALE-1/T-MALE-5 show
+  dimorphic neurons concentrate in higher-order centers that any brain-wide
+  average necessarily includes rather than excludes.
+- **`whole-brain.md` T-WB-12 / T-WB-13** — behavioural-state modulation of the
+  ON-motion pathway (T4 and its inputs Mi1, Tm3, Mi4, Mi9); that file already
+  marks sex as "not confirmed." Cross-checked against this file's own
+  optic-lobe census (T-MALE-4): none of T4, Mi1, Tm3, Mi4, or Mi9 are among
+  the specific types the MaleCNS paper names as sex-specific or dimorphic
+  (Cm26, Tm26, Mi20, TmY21, LoVP92). Reassuring, not conclusive — T-MALE-4's
+  census covers 249 "intrinsic" optic-lobe types and may not be exhaustive
+  for this exact pathway, and an anatomically isomorphic cell type can still
+  carry an unmeasured sex difference in physiology, exactly the pattern
+  T-MALE-17 demonstrates for the DA1 pathway (identical PN anatomy, dimorphic
+  third-order response). Lower risk, not risk-free.
+- **`prior-validation.md` T-PRIOR-006** — real-fly straight-walking leg-joint
+  kinematics used to validate NeuroMechFly v2, explicitly "wildtype (PR)
+  **female** adult Drosophila melanogaster." Body/motor kinematics rather
+  than a central neural-circuit target, and walking gait is not an
+  established sexually-dimorphic behaviour, but named here for completeness
+  since it is an explicit female tag already sitting in the collection.
+
+**Process note.** Sections 1-4 of this file were compiled from literature
+search alone, before any sibling domain file existed to check against. This
+section exists only because the sibling files happened to land during this
+session. If more domain files are added later, they should be checked
+against this one the same way, and this file should be checked against them
+again — the cross-reference is not a one-time pass, and I cannot rule out
+that further female-tagged targets already sit in `whole-brain.md` or
+`prior-validation.md` beyond the ones named above (in particular, several
+entries in both files explicitly say sex was "not confirmed" — those are not
+listed here as female, but they are not confirmed male-safe either).
+
+---
+
 ## What I could not find
 
 Listed explicitly, per the task's instruction:
