@@ -1,0 +1,6 @@
+# experiment: fit-run
+# started:    20260913T135257Z
+# host:       homedev-lan
+# command:    bench/fit.py --budget 400 --population 16 --seeds 3 --seconds 0.6 --out out/fit.json
+# code:       6dc2bd6
+

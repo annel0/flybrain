@@ -343,3 +343,57 @@ graded transmission.
 Also unknown, and not knowable from the source paper: what fraction of local
 interneurons is actually non-spiking. It characterises one population and does
 not quantify the rest. Converting all 177 is an upper bound, not a claim.
+
+---
+
+## 2026-09-13 — Over half the network is cells that do not spike
+
+The visual-system target collection reports that the whole optic lobe pathway
+signals with graded potentials — not only photoreceptors and the lamina
+monopolar cells we already knew about, but **T4 and T5 themselves**, confirmed
+by voltage imaging against calcium imaging (Mishra et al. 2023). The only cell
+in that pathway confidently identified as spiking is the giant fibre
+descending neuron, which is downstream of it.
+
+Counted in our own graph:
+
+| region | neurons | share |
+|---|---|---|
+| **optic lobes** | **95,501** | **57.3%** |
+| central brain | 37,229 | 22.3% |
+| ventral nerve cord | 20,429 | 12.3% |
+| other | 13,541 | 8.1% |
+
+So a majority of the network we simulate consists of cells that do not fire
+action potentials, and we model every one of them as a leaky integrate-and-fire
+neuron.
+
+### This closes the light experiment retroactively
+
+We spent a session driving photoreceptors and measuring the lamina, got a
+response in the right direction that died within one synapse, and concluded the
+operating point was wrong. The operating point may well be wrong, but it was
+never the main problem: we were running a spiking model on a population that
+does not spike, and the failure was structural rather than parametric.
+
+### It also bounds where our existing work stands
+
+Everything we have actually validated — the mushroom body, the antennal lobe,
+the APL result — sits in the 22% that is spiking. That work is not undermined
+by this. Anything visual is.
+
+### An observation-model trap that would have caught us
+
+Calcium-imaging direction selectivity is reported as substantially higher than
+the underlying voltage selectivity for the same cells. Nearly all the published
+tuning numbers are calcium-based. So comparing a model's raw output against
+them systematically reads as "too weak" unless a threshold, filter and
+nonlinearity cascade is applied first — the model would look wrong while being
+right, and the natural response would be to raise gains until it broke.
+
+### Useful numbers that did arrive
+
+Behnia et al. 2014 gives millisecond-scale delays and rectification ratios for
+Mi1, Tm3, Tm1 and Tm2. Chiappe et al. 2010 gives walking-state gain changes of
+2.96-6.5x, up to 16x in one animal, with the tuning peak shifting to 6 Hz —
+which is a perturbation target with real numbers attached.
