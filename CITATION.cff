@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: flybrain
+message: >-
+  This is an independent hobby project, not a peer-reviewed study. If you cite
+  anything from it, cite the connectome releases and the published models it
+  replicates -- listed in the README -- rather than this repository.
+type: software
+abstract: >-
+  A fast GPU simulator for connectome-constrained spiking models of the
+  Drosophila central nervous system, together with an honest record of what it
+  could and could not establish.
+license: MIT
+repository-code: https://github.com/OWNER/flybrain
+keywords:
+  - connectomics
+  - Drosophila
+  - spiking neural network
+  - Triton
+  - reproducibility
