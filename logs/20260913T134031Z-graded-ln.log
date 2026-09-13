@@ -1,0 +1,24 @@
+# experiment: graded-ln
+# started:    20260913T134031Z
+# host:       homedev-lan
+# command:    bench/graded_ln.py
+# code:       1462a1b
+
+antennal lobe local interneurons found: 177
+driving ORN_DA1, graded cells release at 50 Hz when at spike threshold
+
+    graded     n   LN rate   own PN  other PN  selectivity   KC %   max Hz
+        0%     0     227.2    193.5      83.5        2.32x   5.6%    383.0
+       25%    44     254.3    360.1     235.9        1.53x  66.7%    425.0
+       50%    88     192.4    386.0     362.1        1.07x  77.1%    427.0
+       75%   133      66.0    273.0     265.5        1.03x  78.6%    282.0
+      100%   177       0.0    203.2     196.8        1.03x  78.5%    210.0
+
+prediction under test: if the 350 Hz local interneurons were
+smearing the labelled line, selectivity should rise with the
+fraction made graded.
+
+wrote out/graded_ln.json
+
+# exit status: 0
+# finished:    20260913T134041Z

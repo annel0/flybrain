@@ -1,0 +1,37 @@
+# experiment: graded-ln-matched
+# started:    20260913T134053Z
+# host:       homedev-lan
+# command:    bench/graded_ln.py --gain-sweep 50,150,300,600,1000,2000 --out out/graded_ln.json
+# code:       1462a1b
+
+antennal lobe local interneurons found: 177
+driving ORN_DA1, graded cells release at 50 Hz when at spike threshold
+
+    graded     n   LN rate   own PN  other PN  selectivity   KC %   max Hz
+        0%     0     227.2    193.5      83.5        2.32x   5.6%    383.0
+      100%   177       0.0    203.2     196.8        1.03x  78.5%    210.0
+
+the first run conflated two changes: making the cells graded,
+and weakening them. The spiking version ran at 227 Hz while a graded cell at threshold was
+set to release at only 50 Hz, so their
+inhibition was cut several-fold. Sweeping the gain to restore it:
+
+    ref Hz   own PN  other PN  selectivity   KC %   net Hz
+        50    203.2     196.8        1.03x  78.5%    3.623
+       150     92.8      88.9        1.04x  78.2%    1.639
+       300     60.2      57.5        1.05x  76.9%    1.055
+       600     40.3      38.5        1.05x  74.2%    0.701
+      1000     30.4      29.0        1.05x  70.8%    0.520
+      2000     20.5      20.0        1.03x  60.9%    0.354
+
+  spiking baseline for comparison: own PN 193.5, other 83.5, selectivity 2.32x, KC 5.6%, net 1.021 Hz
+
+read the row whose KC recruitment and network rate sit closest
+to the spiking baseline: that is the matched comparison, and its
+selectivity is the answer to whether graded release sharpens the
+labelled line.
+
+wrote out/graded_ln.json
+
+# exit status: 0
+# finished:    20260913T134104Z

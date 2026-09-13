@@ -35,9 +35,9 @@ RING_SLOTS = 32          # must exceed the largest delay in steps
 
 
 @triton.jit
-def membrane_delay(U, G, R, TONIC, FORCE, DELAY, RING, RING_CNT, n, cap, t,
-                   decay, alpha, u_reset, u_th, refrac_steps, sigma, seed,
-                   BLOCK: tl.constexpr, D: tl.constexpr):
+def membrane_delay(U, G, R, TONIC, FORCE, GRADED, DELAY, RING, RING_CNT,
+                   n, cap, t, decay, alpha, u_reset, u_th, refrac_steps,
+                   sigma, seed, BLOCK: tl.constexpr, D: tl.constexpr):
     b = tl.program_id(1)
     n_off = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
     nmask = n_off < n
@@ -56,7 +56,10 @@ def membrane_delay(U, G, R, TONIC, FORCE, DELAY, RING, RING_CNT, n, cap, t,
     # paper: a driven cell spikes at its own rate regardless of its input.
     pf = tl.load(FORCE + n_off, mask=nmask, other=0.0).to(tl.float32)
     coin = tl.rand(seed + t + 7919, offs)
-    s = ((u >= u_th) | (coin < pf)) & live & nmask
+    # Graded cells integrate and release continuously; they never spike, so
+    # they are also never reset and never enter refractoriness.
+    gr = tl.load(GRADED + n_off, mask=nmask, other=0)
+    s = ((u >= u_th) | (coin < pf)) & live & nmask & (gr == 0)
     u = tl.where(s, u_reset, u)
     g = tl.where(s, 0.0, g)          # published model clears g on a spike
     r = tl.where(s, refrac_steps, tl.maximum(r - 1, 0))

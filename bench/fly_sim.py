@@ -29,6 +29,7 @@ import triton
 sys.path.insert(0, str(Path(__file__).parent))
 from bench_lif import load_graph
 from fly_kernels import membrane_delay, deliver, tally_slot, RING_SLOTS
+from graded import graded_buffer, graded_deliver
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import params as P
@@ -101,6 +102,10 @@ class FlySim:
         self.counts = torch.zeros(n, device=self.dev)
         self.force = torch.zeros(n, device=self.dev)
         self.history = None      # optional per-step population spike count
+        self.graded = torch.zeros(n, dtype=torch.int8, device=self.dev)
+        self.graded_idx = None
+        self.graded_gain = 0.0
+        self.graded_ring = None
         self.refrac_steps = int(round(REFRAC_MS / self.dt))
         self.decay = float(np.exp(-self.dt / TAU_S))
         self.alpha = self.dt / TAU_M
@@ -166,7 +171,7 @@ class FlySim:
     def step(self, tonic, record=False):
         slot = self.t % self.ring_slots
         membrane_delay[self.grid_m](
-            self.u, self.g, self.r, tonic, self.force, self.delay,
+            self.u, self.g, self.r, tonic, self.force, self.graded, self.delay,
             self.ring, self.ring_cnt,
             self.n, self.cap, self.t, float(self.decay), float(self.alpha),
             float(U_RESET), float(U_TH), self.refrac_steps,
@@ -178,12 +183,41 @@ class FlySim:
             tally_slot[(triton.cdiv(self.cap, 1024),)](
                 self.ring, self.ring_cnt, self.counts, self.n, self.cap, slot,
                 BLOCK=1024)
+        if self.graded_idx is not None:
+            ng = len(self.graded_idx)
+            graded_buffer[(triton.cdiv(ng, 256),)](
+                self.u, self.graded_idx, self.graded_ring, ng, slot,
+                self.ring_slots, BLOCK=256)
+            graded_deliver[(256, 4)](
+                self.graded_ring, self.graded_idx, self.crow, self.col,
+                self.val, self.g, self.n, ng, slot,
+                float(self.graded_gain), float(self.dt),
+                EBLOCK=128, GRID=256, LANES=4)
         if self.history is not None and self.t < len(self.history):
             # Spikes delivered this step, i.e. those emitted one axonal delay
             # earlier. A constant lag, which is harmless for these statistics.
             self.history[self.t] = self.ring_cnt[slot]
         self.ring_cnt[slot] = 0
         self.t += 1
+
+    def set_graded(self, mask, reference_hz=50.0):
+        """Make these cells non-spiking, releasing in proportion to voltage.
+
+        Gain is fixed so a cell sitting at spike threshold releases at
+        `reference_hz`, which keeps the graded and spiking versions on the
+        same scale instead of silently rescaling the circuit.
+        """
+        self.graded.zero_()
+        if mask is None or not mask.any():
+            self.graded_idx = None
+            return 0
+        idx = np.flatnonzero(mask)
+        self.graded[torch.from_numpy(idx).to(self.dev)] = 1
+        self.graded_idx = torch.from_numpy(idx.astype(np.int32)).to(self.dev)
+        self.graded_gain = reference_hz / max(U_TH, 1e-6)
+        self.graded_ring = torch.zeros(self.ring_slots * len(idx),
+                                       device=self.dev)
+        return len(idx)
 
     def set_poisson(self, mask, rate_hz):
         """Drive these cells as a Poisson spike source at the given rate."""
@@ -200,6 +234,8 @@ class FlySim:
     def reset(self):
         self.u.zero_(); self.g.zero_(); self.r.zero_()
         self.ring_cnt.zero_(); self.ring.zero_(); self.counts.zero_()
+        if self.graded_ring is not None:
+            self.graded_ring.zero_()
         self.t = 0
 
     def run(self, ms, phase_ms=None, record_bin_ms=None, warm=False):

@@ -1,0 +1,102 @@
+{
+  "glomerulus": "DA1",
+  "w_syn": 0.075,
+  "reference_hz": 50.0,
+  "local_interneurons": 177,
+  "rows": [
+    {
+      "graded_fraction": 0.0,
+      "n_graded": 0,
+      "ln_rate_hz": 227.15818786621094,
+      "own_pn_hz": 193.53846740722656,
+      "median_other_pn_hz": 83.5,
+      "selectivity": 2.317825956972773,
+      "kc_recruited_pct": 5.610236220472441,
+      "network_mean_hz": 1.0209615230560303,
+      "max_rate_hz": 383.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 203.15383911132812,
+      "median_other_pn_hz": 196.8000030517578,
+      "selectivity": 1.0322857518345632,
+      "kc_recruited_pct": 78.54330708661418,
+      "network_mean_hz": 3.6231982707977295,
+      "max_rate_hz": 210.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "reference_hz": 50.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 203.15383911132812,
+      "median_other_pn_hz": 196.8000030517578,
+      "selectivity": 1.0322857518345632,
+      "kc_recruited_pct": 78.54330708661418,
+      "network_mean_hz": 3.6231982707977295,
+      "max_rate_hz": 210.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "reference_hz": 150.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 92.84615325927734,
+      "median_other_pn_hz": 88.9000015258789,
+      "selectivity": 1.0443886576565435,
+      "kc_recruited_pct": 78.1742125984252,
+      "network_mean_hz": 1.6386280059814453,
+      "max_rate_hz": 119.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "reference_hz": 300.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 60.153846740722656,
+      "median_other_pn_hz": 57.5,
+      "selectivity": 1.046153856360394,
+      "kc_recruited_pct": 76.87007874015748,
+      "network_mean_hz": 1.055118441581726,
+      "max_rate_hz": 94.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "reference_hz": 600.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 40.30769348144531,
+      "median_other_pn_hz": 38.5,
+      "selectivity": 1.0469530774401379,
+      "kc_recruited_pct": 74.23720472440945,
+      "network_mean_hz": 0.7010619044303894,
+      "max_rate_hz": 91.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "reference_hz": 1000.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 30.384614944458008,
+      "median_other_pn_hz": 29.0,
+      "selectivity": 1.0477453429123451,
+      "kc_recruited_pct": 70.84153543307087,
+      "network_mean_hz": 0.5201206207275391,
+      "max_rate_hz": 90.0
+    },
+    {
+      "graded_fraction": 1.0,
+      "reference_hz": 2000.0,
+      "n_graded": 177,
+      "ln_rate_hz": 0.0,
+      "own_pn_hz": 20.538461685180664,
+      "median_other_pn_hz": 20.0,
+      "selectivity": 1.0269230842590331,
+      "kc_recruited_pct": 60.9005905511811,
+      "network_mean_hz": 0.3543868958950043,
+      "max_rate_hz": 89.0
+    }
+  ]
+}

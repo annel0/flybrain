@@ -283,3 +283,63 @@ A selectivity of 230,769,231x came from dividing by a 1e-9 floor when every
 non-target projection neuron was silent. Fixed to report undefined instead.
 Undefined here means the null produced no projection neuron response at all,
 which is a failure rather than perfect selectivity.
+
+---
+
+## 2026-09-13 — Graded local interneurons: prediction falsified, and it costs us
+
+**Prediction under test:** our antennal lobe local interneurons run at ~227-350 Hz
+and smear activity across glomeruli, leaving only a 2-6x preference for the
+driven one. Some such cells do not spike in the animal at all — they transcribe
+the sodium channel gene `para` without translating it (eNeuro 2022). If forcing
+non-spiking cells to spike was what smeared the labelled line, making them
+graded should sharpen it.
+
+**Implementation:** graded cells never spike, never reset, and release
+continuously in proportion to how far they sit above rest, delivered through
+the same axonal delay via a small per-cell ring. 177 local interneurons found.
+
+### First run repeated the mistake I had just corrected elsewhere
+
+Selectivity fell from 2.32x to 1.03x and Kenyon cell recruitment exploded from
+5.6% to 78.5%. But the gain was set so a graded cell at threshold releases at
+50 Hz, while the spiking version was running at 227 Hz — so the change was not
+"graded instead of spiking", it was "graded **and five times weaker**", and
+these cells are inhibitory. Same error as the first rewiring control: compared
+without matching the confound.
+
+### Matched, the answer does not change
+
+| reference Hz | own PN | other PN | selectivity | KC recruited | network |
+|---|---|---|---|---|---|
+| spiking baseline | 193.5 | 83.5 | **2.32x** | **5.6%** | 1.021 Hz |
+| 50 | 203.2 | 196.8 | 1.03x | 78.5% | 3.623 Hz |
+| 300 | 60.2 | 57.5 | 1.05x | 76.9% | **1.055 Hz** |
+| 2000 | 20.5 | 20.0 | 1.03x | 60.9% | 0.354 Hz |
+
+Selectivity sits at 1.03-1.05x across a **forty-fold** range of gain, including
+the setting where network rate matches the spiking baseline almost exactly.
+The prediction is falsified: with this transfer function, graded release does
+not sharpen the labelled line, it abolishes it.
+
+### The uncomfortable implication
+
+We have been reporting 2-6x glomerular selectivity as evidence the model finds
+the right anatomy. That selectivity apparently **depends on the local
+interneurons spiking** — and they are the cells we have the clearest evidence
+should not spike, at rates we already knew were far too high. So one of our
+better-looking results may rest on an artefact we had already identified as an
+artefact.
+
+### What this does not settle
+
+The transfer function is rectified-linear with no saturation. Real graded
+synapses saturate, and an unsaturating proportional release is uniform
+inhibition with no contrast enhancement, which is close to the worst case for a
+labelled line. A saturating transfer is the obvious next thing to try, and
+until it is tried the finding is about *this* graded model rather than about
+graded transmission.
+
+Also unknown, and not knowable from the source paper: what fraction of local
+interneurons is actually non-spiking. It characterises one population and does
+not quantify the rest. Converting all 177 is an upper bound, not a claim.
