@@ -1,0 +1,32 @@
+# experiment: sparseness-variance
+# started:    20260913T105338Z
+# host:       homedev-lan
+# command:    bench/sparseness_variance.py
+# code:       a94271e
+
+inhibitory gain x8, ORN_DA1, 5 seeds per condition
+wide scatter between seeds -> the window is too short;
+tight scatter with a ragged weight curve -> the regime is unstable
+
+   window   w_syn             KC recruited %   net Hz
+     0.5s   0.750   20.5 +-   8.5  [  6.9- 30.0]    0.505
+     0.5s   1.000   68.1 +-  26.3  [ 19.9- 92.1]    0.804
+     0.5s   1.500   45.0 +-  29.2  [ 21.0- 85.8]    1.320
+     0.5s   2.000   35.2 +-  24.9  [ 12.6- 82.7]    1.789
+     2.0s   0.750   36.7 +-   4.1  [ 32.1- 41.8]    0.519
+     2.0s   1.000   67.2 +-  27.9  [ 14.2- 89.6]    0.891
+     2.0s   1.500   39.8 +-  28.2  [ 16.6- 80.6]    1.503
+     2.0s   2.000   48.1 +-  10.6  [ 34.3- 61.7]    2.157
+
+scatter between seeds, by window:
+  0.5s: mean coefficient of variation across seeds 54%
+  2.0s: mean coefficient of variation across seeds 36%
+
+weight dependence, by window (mean recruitment per weight):
+  0.5s: 0.75->20.5%  1.00->68.1%  1.50->45.0%  2.00->35.2%
+  2.0s: 0.75->36.7%  1.00->67.2%  1.50->39.8%  2.00->48.1%
+
+wrote out/sparseness_variance.json
+
+# exit status: 0
+# finished:    20260913T105418Z

@@ -156,3 +156,67 @@ their phase; separately, `inx7` gap junctions synchronise antennal lobe
 activity, which we already noted as missing from the model. The olfactory
 system has a rhythm. What it does not have is *our* rhythm — 10 kHz, global,
 and identical for every cell.
+
+---
+
+## 2026-09-13 — The ragged sparseness is real, and it names the blocker
+
+**Asked:** is the erratic Kenyon cell recruitment in the balanced regime real,
+or an artefact of half-second windows?
+
+**Ran:** `sparseness_variance.py` (5 seeds x 4 weights x 2 window lengths) and
+the APL regression test at four operating points.
+
+### It is real, and the source is state dependence
+
+| window | w_syn | recruitment across 5 seeds |
+|---|---|---|
+| 0.5 s | 1.00 | 68.1 ± 26.3 % [19.9 – 92.1] |
+| 2.0 s | 1.00 | 67.2 ± 27.9 % [14.2 – 89.6] |
+| 2.0 s | 0.75 | 36.7 ± 4.1 % [32.1 – 41.8] |
+| 2.0 s | 2.00 | 48.1 ± 10.6 % [34.3 – 61.7] |
+
+Coefficient of variation across seeds: **54% at 0.5 s, 36% at 2 s**. Quadrupling
+the window helps but does not converge, and repeats of one condition span
+14% to 90%. The scatter is not measurement noise from a short window — it is
+the network's ongoing state at the moment the odour arrives. In a
+self-sustaining regime the response rides on whatever the network is already
+doing, and that is different every time.
+
+State dependence is biologically real. It also means "recruitment is 5%" is
+not a property this regime has; it has a distribution.
+
+### The APL regression test passes everywhere — including where we did not expect
+
+| w_syn | inh gain | APL rate | KC intact | KC, APL blocked | change |
+|---|---|---|---|---|---|
+| 0.075 | 1 | **249.5 Hz** | 5.6% | 89.1% | +83.5 pp |
+| 0.75 | 8 | 30.5 Hz | 30.6% | 100.0% | +69.4 pp |
+| **1.0** | **8** | **70.5 Hz** | 16.6% | 99.9% | +83.3 pp |
+| 2.0 | 8 | 73.0 Hz | 23.3% | 99.9% | +76.7 pp |
+
+This reframes the earlier result. Our "correct" 5.6% recruitment was obtained
+with APL firing at 250 Hz and the whole network in an unbalanced state with
+membranes four fluctuation widths from threshold. The balanced regime is better
+on every measure we can take — APL at a physiological 30-70 Hz, membranes one to
+two fluctuation widths from threshold, self-sustaining without injected noise,
+and the APL dependence intact — and worse on exactly one: recruitment sits at
+16-31% instead of a few percent.
+
+### Which names the blocker precisely
+
+A point-neuron APL can only implement one global inhibition applied to every
+Kenyon cell at once. The measured biology is not that: APL's inhibition is
+spatially localised, and an individual Kenyon cell inhibits *itself* through
+APL more strongly than it inhibits its neighbours. That per-cell self-inhibition
+is the mechanism that holds recruitment low and stable — and it is exactly what
+collapsing APL into a single voltage destroys.
+
+So the two criteria not converging is no longer a mystery to be resolved by
+more parameter search. It is a missing mechanism with a name. **Compartmentalise
+APL, then re-fit.** Until then the sparseness criterion cannot select an
+operating point, because the model lacks the thing that sets sparseness.
+
+**Revised standing:** the balanced regime at w = 1.0, inhibitory gain 8, is the
+better operating point on present evidence, despite the recruitment figure.
+The 0.075 / gain 1 point should not be defended on its 5.6% alone.
