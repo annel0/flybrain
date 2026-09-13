@@ -712,3 +712,131 @@ incoming event that our passive membrane only integrates; synapse placement
 relative to the spike initiation zone, which a point neuron cannot represent;
 and release probability, which varies by synapse type so that counting T-bars
 does not measure strength uniformly.
+
+---
+
+## 2026-09-13 — The second fit, and why its result is not interpretable
+
+**450 evaluations, 34 minutes.** Eight parameters against eight targets, with
+two held out. The first 200 were a Latin hypercube drawn independently of the
+objective, so the spread measures what the model *allows* rather than where a
+search happened to converge.
+
+**No parameter set satisfied all eight targets.** Not in the uniform sample,
+not in the converging search.
+
+| how many of the 8 targets one parameter set took | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| parameter sets | 5 | 67 | 101 | 94 | 131 | 49 | 3 | **0** |
+
+Individually every target is reachable; the peak projection-neuron response is
+the hardest at 39 of 450, the silent fraction next at 133.
+
+### A hypothesis this killed
+
+Expecting the same escape-versus-mushroom-body conflict in new coordinates, the
+history was searched for a **pair** of targets never satisfied together. There
+is none — every pair is jointly satisfiable somewhere. The obstruction is not
+pairwise, so that account was wrong.
+
+What the history does show is a single axis. Global inhibition is the only knob
+that thins Kenyon cell recruitment, and it destroys the odour response on the
+way:
+
+| inhibition gain | peak PN response | Kenyon cells active |
+|---|---|---|
+| 0.5–2 | 292 Hz | 74% |
+| 2–5 | 123 Hz | 14% |
+| 5–12 | 55 Hz | 15% |
+| 12–40 | **3.4 Hz** | 4.9% |
+
+The search chose the bottom row, and `inh_gain` sat within 2% of its ceiling in
+23 of the 50 best points — the third time this parameter has pressed a bound
+after the bound was already raised twice.
+
+### The held-out targets caught it
+
+Correlation between the fitted score and the held-out score across all 450
+points: **−0.06**. The 50 best-fitting points have a median held-out score of
+34.5; the 50 **worst**-fitting points score **5.8** — six times better. Fitting
+these targets actively damages the ones withheld.
+
+The held-out target that breaks is odour discrimination: two odours should
+recruit largely separate Kenyon cells, and at the best point they overlap about
+**ten times more than chance**.
+
+### Why: at the fitted operating point the odour never arrives
+
+Two accounts were tested directly and **both were wrong**. Sparseness by a fixed
+ranking predicts that total synaptic input picks the winners — rank correlation
++0.07. Sparseness by the glomerular wiring predicts that cells wired to the
+stimulated glomerulus respond — they respond *less* often (7.0%) than unwired
+cells (8.9%).
+
+Turning the noise off settles it. At the fitted parameters, with `sigma=0`:
+
+```
+odour A: projection neurons peak   3.00 Hz   Kenyon cells peak 0.00 Hz
+odour B: projection neurons peak  48.00 Hz   Kenyon cells peak 0.00 Hz
+0 of 4064 Kenyon cells respond to either odour
+```
+
+Every Kenyon cell response at the fitted point is background noise. The "sparse
+code" the fit achieved is a dead network with a few cells flickering.
+
+Lowering inhibition to 2 restores the signal and the wiring starts to matter —
+projection neurons peak at 269 Hz, the glomerular input difference predicts the
+response difference at +0.57, and cells wired to the stimulated glomerulus
+respond at 18.0% against 9.2% for unwired ones. But then 86% of the smaller
+population responds to both odours. Signal without sparseness, or sparseness
+without signal; the model has no setting with both.
+
+### And then the measurement itself turned out to be wrong
+
+Every observable is counted from `sim.reset()`, which zeroes every membrane
+potential, over 0.5–0.6 s. That assumes the network is in its steady state
+immediately. Measured in successive windows out to 20 s, it is not:
+
+| window | whole brain | silent | peak PN | Kenyon cells active |
+|---|---|---|---|---|
+| 0–1 s | 0.45 Hz | 70.6% | 2 Hz | 10.4% |
+| 2–3 s | 0.45 Hz | 70.7% | 25 Hz | 20.1% |
+| 3–4 s | 0.53 Hz | 71.0% | 88 Hz | 27.4% |
+| 19–20 s | 0.58 Hz | 70.5% | 147 Hz | 33.1% |
+
+The network needs **2–3 seconds** to settle. Every target was scored on the
+first 0.5 s of a transient.
+
+Kenyon cell recruitment under odour reads 8.7% in the first second and 25–32%
+once settled — a factor of three, and it moves the one mushroom-body target
+that the fit satisfied from inside its band to well outside it.
+
+The reason this stayed invisible is that the *aggregate* observables are
+stationary: whole-brain rate 0.45 → 0.46, silent fraction 70.9% → 71.0%. Only
+the circuit-level ones drift. Watching the population average would never have
+shown it.
+
+A second measurement artefact surfaced alongside: the silent fraction depends
+on the counting window, reading 90.7% in 250 ms bins and 70.5% in 1000 ms bins,
+because a longer window catches more cells firing at least once. A target
+phrased as "what fraction never fires" is meaningless without the window, and
+ours did not carry one.
+
+**So the fit's numbers above are not interpretable as physiology.** They
+describe which parameters best reproduce a settling transient. The conflict
+between signal and sparseness is real and was measured independently of the
+protocol; the specific parameter values, the zero feasible points, and the
+per-target rates all have to be redone with settling.
+
+### What is missing that would make state a variable at all
+
+The connectome carries 541 neurons releasing dopamine, octopamine or serotonin
+across 435,541 connections — 1.70% of all edges. The importer defines them as
+`MODULATORY` and then never uses the set: every one of them is given sign +1
+and simulated as ordinary fast excitation, indistinguishable from acetylcholine.
+
+Octopamine is the fly's arousal transmitter and dopamine gates mushroom body
+plasticity. A brain has states — rest, arousal, stress, hunger — and these are
+the cells that set them. Modelled this way the simulation has exactly one
+state, whichever one the parameters happen to produce, and no way to ask which
+state the published measurements were taken in.
