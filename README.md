@@ -198,7 +198,9 @@ Princeton for FAFB. Both CC-BY.
 which is the only reason the replication above was possible at all. Most of the
 physiological constants here are theirs, with their citations.
 
-Code is MIT. See [LICENSE](LICENSE) for the data terms, which are separate.
+Code is MIT ([LICENSE](LICENSE)). The connectome terms are separate and
+are set out in [DATA-LICENSES.md](DATA-LICENSES.md); neither dataset is
+redistributed here.
 
 ---
 

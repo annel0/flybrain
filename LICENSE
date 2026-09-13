@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 flybrain contributors
+Copyright (c) 2026 annel0
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,22 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-This licence covers the code in this repository only.
-
-The connectome reconstructions are not ours and carry their own terms:
-
-  MaleCNS v1.0 — Janelia FlyEM, MRC LMB, University of Cambridge and Google
-  Research. CC-BY 4.0. https://male-cns.janelia.org/
-
-  FlyWire FAFB 783 — the FlyWire Consortium, Princeton University. Used here
-  as redistributed with github.com/philshiu/Drosophila_brain_model, whose
-  model this repository replicates. CC-BY 4.0.
-  https://flywire.ai/
-
-  FlyWire community annotations — flyconnectome/flywire_annotations, CC-BY 4.0.
-
-Neither dataset is included in this repository; both are downloaded by the
-import scripts, with checksums recorded.
