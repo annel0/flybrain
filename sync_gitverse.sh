@@ -24,6 +24,13 @@ trap 'git checkout -q "${here}"' EXIT
 git checkout -q -B "${BRANCH}" "${SRC}"
 git mv README.md README.en.md
 git mv README.ru.md README.md
+
+# The cross-links point at the filenames they had on master, so after the
+# rename the Russian page links to itself and the English one to a file that
+# does not exist on this branch. Repoint both.
+perl -0pi -e 's{\(README\.md\)}{(README.en.md)}g' README.md
+perl -0pi -e 's{\(README\.ru\.md\)}{(README.md)}g' README.en.md
+git add README.md README.en.md
 git -c user.name="$(git log -1 --format=%an "${SRC}")" \
     -c user.email="$(git log -1 --format=%ae "${SRC}")" \
     commit -q -m "Swap the READMEs for the GitVerse mirror
