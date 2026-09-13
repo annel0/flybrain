@@ -1,0 +1,448 @@
+{
+  "params": [
+    {
+      "name": "w_syn",
+      "lo": 0.005,
+      "hi": 5.0,
+      "log": true,
+      "note": "published 0.275 (fitted there, against a female connectome); our earlier fit 0.075. Ceiling raised from 1.0 after the first run pressed against it"
+    },
+    {
+      "name": "inh_gain",
+      "lo": 0.5,
+      "hi": 40.0,
+      "log": true,
+      "note": "inhibition relative to excitation per synapse; balanced-network models commonly use 4-8. Ceiling raised from 16 after the first run pressed against it"
+    },
+    {
+      "name": "tau_syn",
+      "lo": 1.0,
+      "hi": 15.0,
+      "log": false,
+      "note": "published 5 ms; ionotropic GABA and GABA-B differ by 10-100x, which one constant cannot represent"
+    },
+    {
+      "name": "v_th",
+      "lo": 4.0,
+      "hi": 12.0,
+      "log": false,
+      "note": "published threshold sits 7 mV above rest"
+    },
+    {
+      "name": "sigma",
+      "lo": 0.0,
+      "hi": 0.4,
+      "log": false,
+      "note": "background noise. Ours, not the published model's, which has none -- so it is fitted rather than assumed"
+    },
+    {
+      "name": "tau_mem",
+      "lo": 5.0,
+      "hi": 60.0,
+      "log": false,
+      "note": "published 20 ms, applied to every cell. Floor lowered from 10 after the first run pressed against it"
+    },
+    {
+      "name": "delay_ms",
+      "lo": 0.8,
+      "hi": 2.0,
+      "log": false,
+      "note": "the published 1.8 ms is one number for every connection, but measured giant-fibre latencies are 0.93-1.46 ms across one synapse and 1.44-1.85 ms across two, so a hop costs far less than the base. Bounded by those measurements"
+    },
+    {
+      "name": "tau_mem_kc",
+      "lo": 150.0,
+      "hi": 500.0,
+      "log": false,
+      "note": "Kenyon cells are measured at >200 ms, a lower bound. Searched below it too, so the fit can disagree with the measurement visibly rather than silently"
+    }
+  ],
+  "targets": [
+    {
+      "id": "T-MB-13",
+      "obs": "kc_recruited_pct",
+      "value": 6.0,
+      "tol": 5.0,
+      "split": "fit",
+      "note": "6 +- 5% of KCs respond to an odour, n=71, electrophysiology, 3.5 SD threshold. T-MB-17 says explicitly: loose tolerance."
+    },
+    {
+      "id": "T-MB-01/02",
+      "obs": "apl_block_delta_pp",
+      "at_least": 20.0,
+      "tol": 10.0,
+      "split": "fit",
+      "note": "blocking APL raises KC odour response and reduces sparseness. A direction, which a global rescaling cannot produce."
+    },
+    {
+      "id": "T-MB-09",
+      "obs": "apl_rate_hz",
+      "at_most": 5.0,
+      "tol": 5.0,
+      "split": "fit",
+      "note": "APL does not fire action potentials. Our spiking APL should at least not run hot; a graded APL would satisfy this exactly."
+    },
+    {
+      "id": "T-WB-3",
+      "obs": "kc_baseline_hz",
+      "at_most": 0.5,
+      "tol": 0.5,
+      "split": "fit",
+      "note": "Kenyon cells are close to silent at baseline, by circuit design."
+    },
+    {
+      "id": "T-AL-16",
+      "obs": "pn_peak_hz",
+      "value": 160.0,
+      "tol": 60.0,
+      "split": "fit",
+      "note": "Rmax fitted per glomerulus: 170, 167, 163, 144 spikes/s. Tolerance spans the spread plus room for our different drive."
+    },
+    {
+      "id": "T-MB-02",
+      "obs": "kc_odor_overlap",
+      "at_most": 0.3,
+      "tol": 0.2,
+      "split": "holdout",
+      "note": "two different odours recruit largely non-overlapping Kenyon cell populations; blocking APL raises the correlation between them. Held out because it tests the mushroom body's function rather than any firing rate, so nothing in the fitted set implies it."
+    },
+    {
+      "id": "T-AL-19",
+      "obs": "ln_rate_hz",
+      "at_most": 60.0,
+      "tol": 40.0,
+      "split": "holdout",
+      "note": "a substantial population of antennal lobe local interneurons does not spike at all; the fraction is not quantified. Held out because our 227 Hz is so far off that fitting to it would dominate everything else."
+    },
+    {
+      "id": "T-WB-2",
+      "obs": "pn_gap_in_sd",
+      "at_most": 3.0,
+      "tol": 2.0,
+      "split": "fit",
+      "note": "projection neurons rest close to spike threshold. No published number exists in fluctuation widths, so this encodes 'close' loosely. Moved into the fitted set after the first run left membranes 11 widths from threshold while satisfying everything it was shown."
+    },
+    {
+      "id": "T-WB-1",
+      "obs": "silent_fraction_pct",
+      "at_most": 60.0,
+      "tol": 20.0,
+      "split": "fit",
+      "note": "no brain-wide rate distribution has ever been measured, so this is not a measurement -- it encodes only that a brain in which four cells in five never fire is not a plausible resting state. Moved into the fitted set after the first run met every fitted target while leaving 90% of the network silent."
+    },
+    {
+      "id": "internal",
+      "obs": "spontaneous_hz",
+      "value": 1.0,
+      "tol": 1.5,
+      "split": "fit",
+      "note": "not from a paper: the order of magnitude implied by the per-cell-type recordings we do have. Marked internal so it is never cited as measured."
+    }
+  ],
+  "evaluations": 6,
+  "wall_s": 11.082602214068174,
+  "best": {
+    "eval": 5,
+    "phase": "search",
+    "x": [
+      0.7343934202101282,
+      0.5793366890987911,
+      0.4058231556390717,
+      0.9374062050610876,
+      1.0,
+      1.0,
+      0.894531129420311,
+      0.6072141231976868
+    ],
+    "params": {
+      "w_syn": 0.7982708395026394,
+      "inh_gain": 6.331401524453053,
+      "tau_syn": 6.6815241789470035,
+      "v_th": 11.499249640488701,
+      "sigma": 0.4,
+      "tau_mem": 60.0,
+      "delay_ms": 1.8734373553043733,
+      "tau_mem_kc": 362.52494311919037
+    },
+    "fit_score": 1.3479719414791662,
+    "holdout_score": 10.229450409962606,
+    "observables": {
+      "spontaneous_hz": 1.2404119968414307,
+      "silent_fraction_pct": 74.07738452309538,
+      "kc_baseline_hz": 0.6487860679626465,
+      "pn_gap_in_sd": 5.902313232421875,
+      "kc_recruited_pct": 13.92716535433071,
+      "apl_rate_hz": 33.33333206176758,
+      "ln_rate_hz": 4.5951032638549805,
+      "network_hz": 1.2314809560775757,
+      "pn_peak_hz": 104.87179565429688,
+      "selectivity": NaN,
+      "kc_odor_overlap": 4.391780163985042,
+      "kc_recruited_second_pct": 15.206692913385826,
+      "apl_block_delta_pp": 65.13287401574803,
+      "kc_recruited_apl_blocked_pct": 79.06003937007874
+    },
+    "error": null
+  },
+  "feasible_count": 0,
+  "history": [
+    {
+      "eval": 1,
+      "phase": "explore",
+      "x": [
+        0.667579500056716,
+        0.9524680921958565,
+        0.6778618584351547,
+        0.576551815476648,
+        0.05855187353418634,
+        0.2877263074499622,
+        0.1804870734163639,
+        0.7665706301791282
+      ],
+      "params": {
+        "w_syn": 0.5031627760019909,
+        "inh_gain": 32.478988355538235,
+        "tau_syn": 10.490066018092165,
+        "v_th": 8.612414523813184,
+        "sigma": 0.023420749413674537,
+        "tau_mem": 20.824946909747922,
+        "delay_ms": 1.0165844880996366,
+        "tau_mem_kc": 418.29972056269486
+      },
+      "fit_score": 4.018959730863571,
+      "holdout_score": 5.0,
+      "observables": {
+        "spontaneous_hz": 0.0,
+        "silent_fraction_pct": 100.0,
+        "kc_baseline_hz": 0.0,
+        "pn_gap_in_sd": 50.39908218383789,
+        "kc_recruited_pct": 0.0,
+        "apl_rate_hz": 5.0,
+        "ln_rate_hz": 2.2598869800567627,
+        "network_hz": 0.03389471024274826,
+        "pn_peak_hz": 4.871794700622559,
+        "selectivity": NaN,
+        "kc_odor_overlap": NaN,
+        "kc_recruited_second_pct": 0.0,
+        "apl_block_delta_pp": 0.0,
+        "kc_recruited_apl_blocked_pct": 0.0
+      },
+      "error": null
+    },
+    {
+      "eval": 2,
+      "phase": "explore",
+      "x": [
+        0.14089574039921948,
+        0.34277322371515434,
+        0.04142775883318798,
+        0.89020813823121,
+        0.8823965038580833,
+        0.871795037160418,
+        0.7945591847539611,
+        0.6657366452630703
+      ],
+      "params": {
+        "w_syn": 0.013232966880118432,
+        "inh_gain": 2.245423658490616,
+        "tau_syn": 1.5799886236646317,
+        "v_th": 11.12166510584968,
+        "sigma": 0.35295860154323333,
+        "tau_mem": 52.948727043822984,
+        "delay_ms": 1.7534710217047533,
+        "tau_mem_kc": 383.00782584207457
+      },
+      "fit_score": 2.4989141923783644,
+      "holdout_score": 3.804011653966831,
+      "observables": {
+        "spontaneous_hz": 1.8534094095230103,
+        "silent_fraction_pct": 56.65266946610677,
+        "kc_baseline_hz": 2.8346457481384277,
+        "pn_gap_in_sd": 3.8620333671569824,
+        "kc_recruited_pct": 54.89665354330708,
+        "apl_rate_hz": 5.0,
+        "ln_rate_hz": 1.9774011373519897,
+        "network_hz": 1.8547791242599487,
+        "pn_peak_hz": 7.435897350311279,
+        "selectivity": 4.461538516558135,
+        "kc_odor_overlap": 1.8216046615867325,
+        "kc_recruited_second_pct": 54.89665354330709,
+        "apl_block_delta_pp": 0.0,
+        "kc_recruited_apl_blocked_pct": 54.89665354330708
+      },
+      "error": null
+    },
+    {
+      "eval": 3,
+      "phase": "explore",
+      "x": [
+        0.6602784462587433,
+        0.22851399482689824,
+        0.5501530920892721,
+        0.22948224352364668,
+        0.46297380799303456,
+        0.37836550167413713,
+        0.5738294467313606,
+        0.17511810749190862
+      ],
+      "params": {
+        "w_syn": 0.47841561166168445,
+        "inh_gain": 1.3609829978108736,
+        "tau_syn": 8.70214328924981,
+        "v_th": 5.835857948189173,
+        "sigma": 0.18518952319721382,
+        "tau_mem": 25.81010259207754,
+        "delay_ms": 1.4885953360776327,
+        "tau_mem_kc": 211.29133762216802
+      },
+      "fit_score": 19.34887900866308,
+      "holdout_score": 5.845385878432369,
+      "observables": {
+        "spontaneous_hz": 7.728734016418457,
+        "silent_fraction_pct": 74.70845830833834,
+        "kc_baseline_hz": 24.76213836669922,
+        "pn_gap_in_sd": 2.7715072631835938,
+        "kc_recruited_pct": 79.6998031496063,
+        "apl_rate_hz": 419.9999694824219,
+        "ln_rate_hz": 339.69866943359375,
+        "network_hz": 8.96560001373291,
+        "pn_peak_hz": 358.33331298828125,
+        "selectivity": 1.7916667016347276,
+        "kc_odor_overlap": 1.2396610042049787,
+        "kc_recruited_second_pct": 80.01968503937007,
+        "apl_block_delta_pp": 20.300196850393704,
+        "kc_recruited_apl_blocked_pct": 100.0
+      },
+      "error": null
+    },
+    {
+      "eval": 4,
+      "phase": "search",
+      "x": [
+        0.6066118127119764,
+        0.30385141717449815,
+        0.46111590989216916,
+        0.7351926410183989,
+        0.9480293435662281,
+        0.12228034036876395,
+        0.9541771324217188,
+        0.9037626271346914
+      ],
+      "params": {
+        "w_syn": 0.3302215734969278,
+        "inh_gain": 1.8933312098043475,
+        "tau_syn": 7.455622738490368,
+        "v_th": 9.881541128147191,
+        "sigma": 0.3792117374264913,
+        "tau_mem": 11.725418720282018,
+        "delay_ms": 1.9450125589060625,
+        "tau_mem_kc": 466.31691949714195
+      },
+      "fit_score": 10.063979734538991,
+      "holdout_score": 9.093382895506936,
+      "observables": {
+        "spontaneous_hz": 3.0161166191101074,
+        "silent_fraction_pct": 87.27654469106179,
+        "kc_baseline_hz": 1.5452755689620972,
+        "pn_gap_in_sd": 2.812685966491699,
+        "kc_recruited_pct": 33.31692913385827,
+        "apl_rate_hz": 343.33331298828125,
+        "ln_rate_hz": 273.3521728515625,
+        "network_hz": 3.4613444805145264,
+        "pn_peak_hz": 315.0,
+        "selectivity": 2.7044024197560437,
+        "kc_odor_overlap": 2.870592293944962,
+        "kc_recruited_second_pct": 33.29232283464567,
+        "apl_block_delta_pp": 61.29429133858268,
+        "kc_recruited_apl_blocked_pct": 94.61122047244095
+      },
+      "error": null
+    },
+    {
+      "eval": 5,
+      "phase": "search",
+      "x": [
+        0.7343934202101282,
+        0.5793366890987911,
+        0.4058231556390717,
+        0.9374062050610876,
+        1.0,
+        1.0,
+        0.894531129420311,
+        0.6072141231976868
+      ],
+      "params": {
+        "w_syn": 0.7982708395026394,
+        "inh_gain": 6.331401524453053,
+        "tau_syn": 6.6815241789470035,
+        "v_th": 11.499249640488701,
+        "sigma": 0.4,
+        "tau_mem": 60.0,
+        "delay_ms": 1.8734373553043733,
+        "tau_mem_kc": 362.52494311919037
+      },
+      "fit_score": 1.3479719414791662,
+      "holdout_score": 10.229450409962606,
+      "observables": {
+        "spontaneous_hz": 1.2404119968414307,
+        "silent_fraction_pct": 74.07738452309538,
+        "kc_baseline_hz": 0.6487860679626465,
+        "pn_gap_in_sd": 5.902313232421875,
+        "kc_recruited_pct": 13.92716535433071,
+        "apl_rate_hz": 33.33333206176758,
+        "ln_rate_hz": 4.5951032638549805,
+        "network_hz": 1.2314809560775757,
+        "pn_peak_hz": 104.87179565429688,
+        "selectivity": NaN,
+        "kc_odor_overlap": 4.391780163985042,
+        "kc_recruited_second_pct": 15.206692913385826,
+        "apl_block_delta_pp": 65.13287401574803,
+        "kc_recruited_apl_blocked_pct": 79.06003937007874
+      },
+      "error": null
+    },
+    {
+      "eval": 6,
+      "phase": "search",
+      "x": [
+        0.13750441031534855,
+        0.49866376006397506,
+        0.6969424805229008,
+        0.11349156087513368,
+        0.6185366180546025,
+        0.628959108446669,
+        0.7088128171888606,
+        0.1447646099728433
+      ],
+      "params": {
+        "w_syn": 0.012926568004607316,
+        "inh_gain": 4.44602615253825,
+        "tau_syn": 10.757194727320611,
+        "v_th": 4.907932487001069,
+        "sigma": 0.247414647221841,
+        "tau_mem": 39.5927509645668,
+        "delay_ms": 1.6505753806266328,
+        "tau_mem_kc": 200.66761349049514
+      },
+      "fit_score": 5.553102393491375,
+      "holdout_score": 2.8388342765558043,
+      "observables": {
+        "spontaneous_hz": 4.991041660308838,
+        "silent_fraction_pct": 24.72885422915417,
+        "kc_baseline_hz": 4.862204551696777,
+        "pn_gap_in_sd": 3.2480740547180176,
+        "kc_recruited_pct": 69.61122047244095,
+        "apl_rate_hz": 91.66666412353516,
+        "ln_rate_hz": 13.785310745239258,
+        "network_hz": 4.975294589996338,
+        "pn_peak_hz": 64.1025619506836,
+        "selectivity": 19.23076904370234,
+        "kc_odor_overlap": 1.4355337106223218,
+        "kc_recruited_second_pct": 69.56200787401575,
+        "apl_block_delta_pp": 7.381889763779526,
+        "kc_recruited_apl_blocked_pct": 76.99311023622047
+      },
+      "error": null
+    }
+  ]
+}

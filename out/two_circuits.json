@@ -1,0 +1,205 @@
+{
+  "w_syn": 0.275,
+  "rows": [
+    {
+      "tau_mem": 2.0,
+      "tau_syn": 1.0,
+      "escape_margin": 0.6641285078866142,
+      "escape_fires": false,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 19.066898345947266
+    },
+    {
+      "tau_mem": 2.0,
+      "tau_syn": 5.0,
+      "escape_margin": 0.9818370682852608,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 33.85392761230469
+    },
+    {
+      "tau_mem": 2.0,
+      "tau_syn": 10.0,
+      "escape_margin": 0.9642519269670758,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 37.448829650878906
+    },
+    {
+      "tau_mem": 2.0,
+      "tau_syn": 20.0,
+      "escape_margin": 0.9901023592267718,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 40.32452392578125
+    },
+    {
+      "tau_mem": 2.0,
+      "tau_syn": 40.0,
+      "escape_margin": 0.9146398135593959,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 41.18408966064453
+    },
+    {
+      "tau_mem": 5.0,
+      "tau_syn": 1.0,
+      "escape_margin": 0.3524242469242641,
+      "escape_fires": false,
+      "kc_recruited_pct": 97.34251968503938,
+      "network_hz": 10.878151893615723
+    },
+    {
+      "tau_mem": 5.0,
+      "tau_syn": 5.0,
+      "escape_margin": 0.999413081577846,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 24.976940155029297
+    },
+    {
+      "tau_mem": 5.0,
+      "tau_syn": 10.0,
+      "escape_margin": 0.995943546295166,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 28.85870361328125
+    },
+    {
+      "tau_mem": 5.0,
+      "tau_syn": 20.0,
+      "escape_margin": 0.9883992331368583,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 31.460851669311523
+    },
+    {
+      "tau_mem": 5.0,
+      "tau_syn": 40.0,
+      "escape_margin": 0.9897797448294503,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 32.930606842041016
+    },
+    {
+      "tau_mem": 10.0,
+      "tau_syn": 1.0,
+      "escape_margin": 0.20329182488577707,
+      "escape_fires": false,
+      "kc_recruited_pct": 37.278543307086615,
+      "network_hz": 3.2698380947113037
+    },
+    {
+      "tau_mem": 10.0,
+      "tau_syn": 5.0,
+      "escape_margin": 0.6827570370265416,
+      "escape_fires": false,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 18.03481674194336
+    },
+    {
+      "tau_mem": 10.0,
+      "tau_syn": 10.0,
+      "escape_margin": 0.998640741620745,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 21.698776245117188
+    },
+    {
+      "tau_mem": 10.0,
+      "tau_syn": 20.0,
+      "escape_margin": 0.9946902820042202,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 24.079879760742188
+    },
+    {
+      "tau_mem": 10.0,
+      "tau_syn": 40.0,
+      "escape_margin": 0.9857651846749442,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 25.298595428466797
+    },
+    {
+      "tau_mem": 20.0,
+      "tau_syn": 1.0,
+      "escape_margin": 0.11191520520618983,
+      "escape_fires": false,
+      "kc_recruited_pct": 3.2726377952755903,
+      "network_hz": 1.251397728919983
+    },
+    {
+      "tau_mem": 20.0,
+      "tau_syn": 5.0,
+      "escape_margin": 0.4295535087585449,
+      "escape_fires": false,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 11.154781341552734
+    },
+    {
+      "tau_mem": 20.0,
+      "tau_syn": 10.0,
+      "escape_margin": 0.6851196970258441,
+      "escape_fires": false,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 14.48337173461914
+    },
+    {
+      "tau_mem": 20.0,
+      "tau_syn": 20.0,
+      "escape_margin": 0.9997036797659737,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 16.592309951782227
+    },
+    {
+      "tau_mem": 20.0,
+      "tau_syn": 40.0,
+      "escape_margin": 0.9995759555271694,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 18.033628463745117
+    },
+    {
+      "tau_mem": 40.0,
+      "tau_syn": 1.0,
+      "escape_margin": 0.05954025047166007,
+      "escape_fires": false,
+      "kc_recruited_pct": 0.5413385826771654,
+      "network_hz": 0.6908458471298218
+    },
+    {
+      "tau_mem": 40.0,
+      "tau_syn": 5.0,
+      "escape_margin": 0.25311481952667236,
+      "escape_fires": false,
+      "kc_recruited_pct": 99.04035433070865,
+      "network_hz": 5.294949054718018
+    },
+    {
+      "tau_mem": 40.0,
+      "tau_syn": 10.0,
+      "escape_margin": 0.431323732648577,
+      "escape_fires": false,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 8.084127426147461
+    },
+    {
+      "tau_mem": 40.0,
+      "tau_syn": 20.0,
+      "escape_margin": 0.6863080433436802,
+      "escape_fires": false,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 9.987234115600586
+    },
+    {
+      "tau_mem": 40.0,
+      "tau_syn": 40.0,
+      "escape_margin": 0.9997074263436454,
+      "escape_fires": true,
+      "kc_recruited_pct": 100.0,
+      "network_hz": 11.219099998474121
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "published": {
+    "GF->TTMn": [
+      [
+        "Trimarchi & Schneiderman 1993",
+        1.46
+      ],
+      [
+        "Augustin et al. 2019, young",
+        0.93
+      ],
+      [
+        "Augustin et al. 2019, aged",
+        1.22
+      ]
+    ],
+    "GF->DLMn": [
+      [
+        "Augustin et al. 2019, young",
+        1.44
+      ],
+      [
+        "Augustin et al. 2019, aged",
+        1.85
+      ]
+    ]
+  },
+  "rows": [
+    {
+      "delay_ms": 0.8,
+      "gf_to_ttmn_ms": null,
+      "gf_to_dlmn_ms": null,
+      "gf_to_psi_ms": null,
+      "ratio": NaN,
+      "n_gf": 2
+    },
+    {
+      "delay_ms": 1.0,
+      "gf_to_ttmn_ms": null,
+      "gf_to_dlmn_ms": null,
+      "gf_to_psi_ms": null,
+      "ratio": NaN,
+      "n_gf": 2
+    },
+    {
+      "delay_ms": 1.4,
+      "gf_to_ttmn_ms": null,
+      "gf_to_dlmn_ms": null,
+      "gf_to_psi_ms": null,
+      "ratio": NaN,
+      "n_gf": 2
+    },
+    {
+      "delay_ms": 1.8,
+      "gf_to_ttmn_ms": null,
+      "gf_to_dlmn_ms": null,
+      "gf_to_psi_ms": null,
+      "ratio": NaN,
+      "n_gf": 2
+    }
+  ]
+}

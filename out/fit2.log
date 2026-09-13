@@ -1,0 +1,27 @@
+8 parameters, 8 targets to fit, 2 held out
+   w_syn        [0.005, 5] log   published 0.275 (fitted there, against a female connectome); our earlier fit 0.075. Ceiling raised from 1.0 after the first run pressed against it
+   inh_gain     [0.5, 40] log   inhibition relative to excitation per synapse; balanced-network models commonly use 4-8. Ceiling raised from 16 after the first run pressed against it
+   tau_syn      [1, 15]   published 5 ms; ionotropic GABA and GABA-B differ by 10-100x, which one constant cannot represent
+   v_th         [4, 12]   published threshold sits 7 mV above rest
+   sigma        [0, 0.4]   background noise. Ours, not the published model's, which has none -- so it is fitted rather than assumed
+   tau_mem      [5, 60]   published 20 ms, applied to every cell. Floor lowered from 10 after the first run pressed against it
+   delay_ms     [0.8, 2]   the published 1.8 ms is one number for every connection, but measured giant-fibre latencies are 0.93-1.46 ms across one synapse and 1.44-1.85 ms across two, so a hop costs far less than the base. Bounded by those measurements
+   tau_mem_kc   [150, 500]   Kenyon cells are measured at >200 ms, a lower bound. Searched below it too, so the fit can disagree with the measurement visibly rather than silently
+
+budget 450 evaluations, 2 seeds each, 0.5 s per run
+
+phase 1: 200 evaluations sampled uniformly, to measure the feasible region
+
+  [  25] sampled, best so far 1.079
+  [  50] sampled, best so far 1.079
+  [  75] sampled, best so far 0.844
+  [ 100] sampled, best so far 0.650
+  [ 125] sampled, best so far 0.650
+  [ 150] sampled, best so far 0.650
+  [ 175] sampled, best so far 0.650
+  [ 200] sampled, best so far 0.650
+
+  uniform sample: 0 of 200 satisfy every fitted target
+
+phase 2: converging search
+

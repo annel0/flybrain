@@ -640,3 +640,75 @@ number and a circuit attached.
 
 **It also means the latency target cannot be used until gap junctions exist in
 the model.** Recorded as blocked rather than failed.
+
+---
+
+## 2026-09-13 — Two circuits, one parameter set: measured, then partly resolved
+
+**The question:** the escape circuit needs a single spike to cross a synapse;
+the mushroom body needs most of its cells to stay quiet. Can one set of
+physiological constants serve both?
+
+**Swept both time constants, 5x5, at the published weight.** Each cell scored
+on the escape margin (peak depolarisation at the jump motor neuron as a
+fraction of threshold) and Kenyon cell recruitment.
+
+| | τ_s=1 | τ_s=5 | τ_s=10 | τ_s=20 | τ_s=40 |
+|---|---|---|---|---|---|
+| **τ_m=2** | 0.66 / 100% | 0.98 / 100% | 0.96 / 100% | 0.99 / 100% | 0.91 / 100% |
+| **τ_m=20** | 0.11 / **3.3%** | 0.43 / 100% | 0.69 / 100% | 1.00 / 100% | 1.00 / 100% |
+| **τ_m=40** | 0.06 / 0.5% | 0.25 / 99% | 0.43 / 100% | 0.69 / 100% | 1.00 / 100% |
+
+Escape fires at 14 of 25 settings, the mushroom body is in range at 1, and
+**they never overlap**. Wherever the escape circuit works, every Kenyon cell
+fires. The two demand opposite things along the same axis.
+
+That turns "this model needs cell-type-specific physiology" from an assertion
+into a measurement.
+
+### A fix that failed, then one that worked
+
+Giving Kenyon cells their measured 220 ms membrane constant and the rest of the
+network a fast one **did not work** — recruitment stayed at 95%. The reasoning
+behind it was backwards: a slow membrane integrates over a *longer* window, so
+it makes a cell easier to drive, not harder. Kenyon cell sparseness comes from
+few inputs per cell, a high threshold and APL feedback, not from slow membranes.
+
+What worked was per-class synaptic gain plus a fast membrane on the one motor
+neuron: base weight 0.075, descending neurons scaled ×4-24, TTMn at 2-5 ms
+against the global 20 ms. Seven of eight settings then satisfy **both**
+circuits, and the solution holds across a sixfold range of gain rather than
+sitting on a knife edge.
+
+### And the honest problem with it
+
+The ×4 gain on descending neurons is standing in for the missing gap junctions.
+The real giant-fibre-to-motor-neuron connection is electrical; a stronger
+chemical synapse reproduces the number for the wrong reason. Usable as a
+labelled engineering stand-in, not as a claim that descending neurons have
+stronger synapses.
+
+### Conductance-based synapses: physically right, does not resolve it
+
+Our synapse added its conductance to the membrane as though it were a voltage.
+A real synapse passes current proportional to the driving force, and a large
+conductance also shortens the membrane's effective time constant — so a big
+input speeds the membrane up, which is exactly the effect we were missing.
+
+Implemented as an option. It makes a single event about **eight times** more
+effective, lifting the escape margin from 0.12 to 0.93 at the same weight. But
+it lifts the mushroom body equally, so at matched Kenyon cell recruitment the
+escape margin is 0.16 against 0.12 — better, not different in kind.
+
+So the conflict is not in the synapse model. It is in the *relative* strength
+of the two circuits, which no global change touches. The model is kept because
+it is the correct physics, not because it solved anything.
+
+### Candidate mechanisms that remain
+
+Four, all real, none derivable from a connectome: gap junctions (documented for
+this exact circuit); active dendrites, where voltage-gated channels amplify an
+incoming event that our passive membrane only integrates; synapse placement
+relative to the spike initiation zone, which a point neuron cannot represent;
+and release probability, which varies by synapse type so that counting T-bars
+does not measure strength uniformly.

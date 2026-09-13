@@ -41,7 +41,8 @@ RING_SLOTS = 32          # must exceed the largest delay in steps
 @triton.jit
 def membrane_delay(U, G, R, TONIC, FORCE, GRADED, ALPHA, DELAY, RING, RING_CNT,
                    n, cap, t, decay, u_reset, u_th, refrac_steps,
-                   sigma, seed, BLOCK: tl.constexpr, D: tl.constexpr):
+                   sigma, seed, e_exc, e_inh, cond: tl.constexpr,
+                   BLOCK: tl.constexpr, D: tl.constexpr):
     b = tl.program_id(1)
     n_off = tl.program_id(0) * BLOCK + tl.arange(0, BLOCK)
     nmask = n_off < n
@@ -59,7 +60,20 @@ def membrane_delay(U, G, R, TONIC, FORCE, GRADED, ALPHA, DELAY, RING, RING_CNT,
     g = g * decay
     live = r == 0
     noise = tl.randn(seed + t, offs) * sigma   # fresh stream each step
-    u = tl.where(live, u + alpha * (-u + g + drive) + noise, u)
+    if cond:
+        # Conductance-based: current is the conductance times the driving
+        # force, so a large input both depolarises and *speeds up* the
+        # membrane, because the effective time constant is C/(g_leak+g_syn).
+        # The current-based form below keeps tau fixed however large the input
+        # is, which is why a 19 mV conductance produced only 3 mV of membrane.
+        # g carries the sign of the transmitter, so it is split into an
+        # excitatory and an inhibitory part, each with its own reversal.
+        ge = tl.maximum(g, 0.0)
+        gi = tl.maximum(-g, 0.0)
+        drive_term = ge * (e_exc - u) + gi * (e_inh - u)
+        u = tl.where(live, u + alpha * (-u + drive_term + drive) + noise, u)
+    else:
+        u = tl.where(live, u + alpha * (-u + g + drive) + noise, u)
     # Poisson forcing, as optogenetic activation is modelled in the source
     # paper: a driven cell spikes at its own rate regardless of its input.
     pf = tl.load(FORCE + n_off, mask=nmask, other=0.0).to(tl.float32)

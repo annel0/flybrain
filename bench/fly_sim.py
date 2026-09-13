@@ -49,7 +49,8 @@ class FlySim:
                  scale=P.WEIGHT_PER_SYNAPSE_MV, cap=1 << 14, batch=1,
                  delay_mode="published", min_synapses=1, inh_gain=1.0,
                  dt=DT, tau_mem=None, tau_syn=None, v_th=None,
-                 tau_mem_by_type=None, delay_ms=None):
+                 tau_mem_by_type=None, delay_ms=None, gain_by_class=None,
+                 conductance=False, e_exc=52.0, e_inh=-18.0):
         z = np.load(graph, allow_pickle=False)
         crow, col, val, _ = load_graph(graph)
         self.n = n = len(crow) - 1
@@ -74,6 +75,17 @@ class FlySim:
         # separately; the connectome fixes who inhibits whom, not how hard.
         w = torch.from_numpy(val).to(self.dev) * scale
         w[w < 0] *= inh_gain
+        # Per-class synaptic gain: a rule with a couple of dozen parameters
+        # instead of a weight per connection, which no data could constrain.
+        # Keyed on the PREsynaptic cell's superclass, which is filled for every
+        # neuron in the release.
+        self.gain_by_class = dict(gain_by_class or {})
+        if self.gain_by_class:
+            src = np.repeat(np.arange(n), np.diff(crow))
+            g = np.ones(len(val), dtype=np.float32)
+            for cls, mult in self.gain_by_class.items():
+                g[np.isin(src, np.flatnonzero(self.superclass == cls))] = float(mult)
+            w *= torch.from_numpy(g).to(self.dev)
         self.val = w
         self.inh_gain = inh_gain
         # The timestep is ours, not the animal's. Everything derived from it
@@ -108,6 +120,10 @@ class FlySim:
         self.graded_idx = None
         self.graded_gain = 0.0
         self.graded_ring = None
+        # Reversals relative to rest (-52 mV absolute): cholinergic ~0 mV
+        # absolute, chloride-mediated inhibition ~-70 mV absolute.
+        self.conductance = bool(conductance)
+        self.e_exc, self.e_inh = float(e_exc), float(e_inh)
         self.refrac_steps = int(round(REFRAC_MS / self.dt))
         self.tau_syn = float(tau_syn if tau_syn is not None else TAU_S)
         self.tau_mem = float(tau_mem if tau_mem is not None else TAU_M)
@@ -193,7 +209,8 @@ class FlySim:
             self.alpha, self.delay, self.ring, self.ring_cnt,
             self.n, self.cap, self.t, float(self.decay),
             float(U_RESET), float(self.u_th), self.refrac_steps,
-            float(self.sigma), int(self.seed), BLOCK=BLOCK, D=self.ring_slots)
+            float(self.sigma), int(self.seed), self.e_exc, self.e_inh,
+            cond=self.conductance, BLOCK=BLOCK, D=self.ring_slots)
         deliver[(GRID, LANES)](
             self.ring, self.ring_cnt, self.crow, self.col, self.val, self.g,
             self.n, self.cap, slot, EBLOCK=EBLOCK, GRID=GRID, LANES=LANES)
