@@ -4,3 +4,55 @@
 # command:    bench/fit.py --budget 400 --population 16 --seeds 3 --seconds 0.6 --out out/fit.json
 # code:       6dc2bd6
 
+8 parameters, 6 targets to fit, 3 held out
+   w_syn        [0.01, 1] log   published 0.275 (fitted there, against a female connectome); our earlier fit 0.075
+   inh_gain     [0.5, 16] log   inhibition relative to excitation per synapse; balanced-network models commonly use 4-8
+   tau_syn      [1, 15]   published 5 ms; ionotropic GABA and GABA-B differ by 10-100x, which one constant cannot represent
+   v_th         [4, 12]   published threshold sits 7 mV above rest
+   sigma        [0, 0.4]   background noise. Ours, not the published model's, which has none -- so it is fitted rather than assumed
+   tau_mem      [10, 40]   published 20 ms, applied to every cell
+   delay_ms     [0.8, 2]   the published 1.8 ms is one number for every connection, but measured giant-fibre latencies are 0.93-1.46 ms across one synapse and 1.44-1.85 ms across two, so a hop costs far less than the base. Bounded by those measurements
+   tau_mem_kc   [150, 500]   Kenyon cells are measured at >200 ms, a lower bound. Searched below it too, so the fit can disagree with the measurement visibly rather than silently
+
+budget 400 evaluations, 3 seeds each, 0.6 s per run
+
+  [   1] fit   5.689  holdout   2.362   w_syn=0.119  inh_gain=2.47  tau_syn=10.7  v_th=8.25  sigma=0.136  tau_mem=28.3  delay_ms=1.87  tau_mem_kc=424
+  [   2] fit   3.455  holdout   4.502   w_syn=0.0378  inh_gain=0.759  tau_syn=5.38  v_th=8.1  sigma=0  tau_mem=23  delay_ms=0.951  tau_mem_kc=248
+  [   3] fit   3.287  holdout   1.230   w_syn=0.0471  inh_gain=2.04  tau_syn=9.73  v_th=10.5  sigma=0.185  tau_mem=37.3  delay_ms=1.16  tau_mem_kc=362
+  [   5] fit   1.608  holdout   1.662   w_syn=0.0803  inh_gain=4.96  tau_syn=8.9  v_th=8.85  sigma=0.122  tau_mem=23.8  delay_ms=1.68  tau_mem_kc=482
+  [   7] fit   0.489  holdout   3.805   w_syn=1  inh_gain=11.1  tau_syn=9.5  v_th=5.1  sigma=0.199  tau_mem=30.9  delay_ms=0.936  tau_mem_kc=366
+  [  22] fit   0.285  holdout   8.498   w_syn=1  inh_gain=16  tau_syn=11.1  v_th=7.44  sigma=0.254  tau_mem=24  delay_ms=1.59  tau_mem_kc=368
+  [ 253] fit   0.277  holdout   1.414   w_syn=1  inh_gain=8.1  tau_syn=10.1  v_th=8.19  sigma=0.153  tau_mem=10.5  delay_ms=1.29  tau_mem_kc=304
+  [ 268] fit   0.192  holdout   1.886   w_syn=1  inh_gain=9.44  tau_syn=11.6  v_th=8.43  sigma=0.123  tau_mem=10  delay_ms=1.19  tau_mem_kc=295
+  [ 278] fit   0.158  holdout   2.490   w_syn=0.944  inh_gain=9.86  tau_syn=10.5  v_th=8.19  sigma=0.102  tau_mem=10  delay_ms=1.23  tau_mem_kc=292
+  [ 364] fit   0.150  holdout   1.464   w_syn=0.939  inh_gain=12  tau_syn=9.5  v_th=8.46  sigma=0.156  tau_mem=10.8  delay_ms=1.02  tau_mem_kc=253
+  [ 366] fit   0.097  holdout   1.856   w_syn=1  inh_gain=11.2  tau_syn=10.4  v_th=8.39  sigma=0.13  tau_mem=10.1  delay_ms=1.2  tau_mem_kc=263
+
+400 evaluations in 38.0 min (5.7 s each)
+parameter sets satisfying every fitted target: 53 of 400
+  the feasible range of each parameter (this is the degeneracy):
+    w_syn            0.835 ..         1   (  1.2x)   prior span 100x
+    inh_gain          7.76 ..        16   (  2.1x)   prior span 32x
+    tau_syn           8.65 ..      12.1   (  1.4x)   prior span 15x
+    v_th              7.23 ..      8.93   (  1.2x)   prior span 3x
+    sigma            0.102 ..     0.254   (  2.5x)   prior span 400000000000x
+    tau_mem             10 ..        24   (  2.4x)   prior span 4x
+    delay_ms         0.985 ..      1.59   (  1.6x)   prior span 2x
+    tau_mem_kc         210 ..       368   (  1.8x)   prior span 3x
+
+best fitted score 0.097, held-out score at that point 1.856
+  target by target:
+    [fit ] T-MB-13      kc_recruited_pct         got      4.04  want      = 6.0  miss  0.39
+    [fit ] T-MB-01/02   apl_block_delta_pp       got      90.6  want    >= 20.0  miss  0.00
+    [fit ] T-MB-09      apl_rate_hz              got         5  want     <= 5.0  miss  0.00
+    [fit ] T-WB-3       kc_baseline_hz           got     0.277  want     <= 0.5  miss  0.00
+    [fit ] T-AL-16      pn_peak_hz               got       149  want    = 160.0  miss  0.18
+    [fit ] internal     spontaneous_hz           got      1.01  want      = 1.0  miss  0.01
+    [HELD] T-AL-19      ln_rate_hz               got      5.83  want    <= 60.0  miss  0.00
+    [HELD] T-WB-2       pn_gap_in_sd             got      11.1  want     <= 3.0  miss  4.07
+    [HELD] T-WB-1       silent_fraction_pct      got      89.9  want    <= 60.0  miss  1.50
+
+wrote out/fit.json
+
+# exit status: 0
+# finished:    20260913T143102Z

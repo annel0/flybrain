@@ -517,3 +517,57 @@ Shiu et al. ran a connectivity-shuffling control themselves: across 100
 shuffled matrices MN9 fired in 1 of 100, mean 0.0043 Hz against 68 Hz with real
 wiring. So the earlier statement — from the prior-validation survey — that
 FlyGM was the only model in the field to run that control is wrong. Two did.
+
+---
+
+## 2026-09-13 — First fit: it satisfied its targets, and the run cannot be trusted
+
+400 evaluations, 38 minutes, 8 parameters against 6 fitted targets with 3 held
+out. 53 parameter sets satisfy every fitted target simultaneously — which is
+itself progress, since earlier we could not find one satisfying both a balanced
+operating point and sparse Kenyon cell coding.
+
+Best point: KC recruitment 4.04% (want 6 ± 5), APL block +90.6 pp (want ≥ 20),
+APL rate 5.0 Hz (want ≤ 5), KC baseline 0.277 Hz, PN peak 149 Hz, spontaneous
+1.01 Hz. Fitted score 0.097.
+
+### Three reasons the result does not support a claim
+
+**Three parameters sat on their bounds.** `w_syn` came out 0.835-1.0 against a
+ceiling of 1.0, `inh_gain` 7.76-16 against a ceiling of 16, `tau_mem` 10-24
+against a floor of 10. A parameter at its bound means the bound is setting the
+answer, not the data.
+
+**The search converged rather than explored.** 52 of the 53 feasible points
+come from the second half of the run, median evaluation 339 of 400. The
+strategy shrinks its spread 15% per generation, so it *must* converge whether
+or not the targets constrain anything. The narrow parameter ranges it produced
+are therefore a picture of where the search went, not a measurement of what the
+data allows — which means the degeneracy prediction made before this run was
+**not tested**, rather than confirmed or refuted.
+
+**It overfitted, visibly.** Fitted score 0.097 against a held-out score of
+1.856. Two of three held-out targets fail badly: membrane potentials sit 11
+fluctuation widths from threshold against a target of ≤ 3, and 89.9% of the
+network is silent against ≤ 60%. The fit met its targets by building a nearly
+dead network in which a handful of cells behave correctly.
+
+The correlation between fitted and held-out score across all 400 evaluations is
++0.025 — essentially zero. So this is not the usual overfitting where improving
+one degrades the other. It is worse in a quieter way: the six fitted targets
+carry **no information at all** about what the held-out ones measure.
+
+### Fixes, all specific
+
+1. Widen the three bounds that were hit, and re-run.
+2. Separate the two questions the run conflated: use the converging search to
+   *find* a good point, and a uniform or Latin-hypercube sample to *measure*
+   the feasible region. One run cannot do both.
+3. Either move the two failing held-out targets into the fitted set, or state
+   plainly that the model cannot satisfy them — the second being a result.
+
+### Kept as a standing caution
+
+The held-out split is the only reason any of this was visible. Reported on its
+fitted targets alone this run looks like a success: six of six satisfied, score
+0.097.
