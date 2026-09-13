@@ -1,0 +1,89 @@
+{
+  "neurons": 20000,
+  "edges": 2593793,
+  "sim_ms": 500.0,
+  "tonic_mu": 1.25,
+  "weight_scale": 0.05,
+  "drive_mu": 1.25,
+  "drive_sigma": 4.0,
+  "speed_us_per_step": {
+    "fp32": 462.5,
+    "fp16": 414.3,
+    "mixed v-fp32": 427.0
+  },
+  "speed_batch": 64,
+  "ref_mean_rate_hz": 5.558300018310547,
+  "ref_wall_s": 1.967397236963734,
+  "rows": [
+    {
+      "variant": "fp32 rerun (identical config)",
+      "mean_rate_hz": 5.558,
+      "mean_rate_delta_hz": 0.0,
+      "population_rate_rel_error_%": 0.0,
+      "per_neuron_rate_corr": 1.0,
+      "per_neuron_mean_abs_err_hz": 0.0,
+      "median_rel_err_active_%": 0.0,
+      "silent_cells_ref": 17564,
+      "silent_cells_var": 17564,
+      "binned_50ms_corr": 1.0,
+      "wall_s": 2.02,
+      "speedup_vs_fp32": 0.98
+    },
+    {
+      "variant": "fp32 + 1e-4 mV nudge",
+      "mean_rate_hz": 5.559,
+      "mean_rate_delta_hz": 0.0011,
+      "population_rate_rel_error_%": 0.02,
+      "per_neuron_rate_corr": 1.0,
+      "per_neuron_mean_abs_err_hz": 0.0065,
+      "median_rel_err_active_%": 0.0,
+      "silent_cells_ref": 17564,
+      "silent_cells_var": 17564,
+      "binned_50ms_corr": 0.9996,
+      "wall_s": 1.97,
+      "speedup_vs_fp32": 1.0
+    },
+    {
+      "variant": "all fp16 storage",
+      "mean_rate_hz": 5.317,
+      "mean_rate_delta_hz": -0.241,
+      "population_rate_rel_error_%": 4.34,
+      "per_neuron_rate_corr": 0.9995,
+      "per_neuron_mean_abs_err_hz": 0.258,
+      "median_rel_err_active_%": 0.0,
+      "silent_cells_ref": 17564,
+      "silent_cells_var": 17676,
+      "binned_50ms_corr": 0.9927,
+      "wall_s": 2.03,
+      "speedup_vs_fp32": 0.97
+    },
+    {
+      "variant": "all bf16 storage",
+      "mean_rate_hz": 3.983,
+      "mean_rate_delta_hz": -1.5752,
+      "population_rate_rel_error_%": 28.34,
+      "per_neuron_rate_corr": 0.984,
+      "per_neuron_mean_abs_err_hz": 1.6242,
+      "median_rel_err_active_%": 85.71,
+      "silent_cells_ref": 17564,
+      "silent_cells_var": 18722,
+      "binned_50ms_corr": 0.9444,
+      "wall_s": 2.07,
+      "speedup_vs_fp32": 0.95
+    },
+    {
+      "variant": "mixed: v fp32, g+refr fp16",
+      "mean_rate_hz": 5.379,
+      "mean_rate_delta_hz": -0.179,
+      "population_rate_rel_error_%": 3.22,
+      "per_neuron_rate_corr": 0.9998,
+      "per_neuron_mean_abs_err_hz": 0.196,
+      "median_rel_err_active_%": 0.0,
+      "silent_cells_ref": 17564,
+      "silent_cells_var": 17578,
+      "binned_50ms_corr": 0.9947,
+      "wall_s": 2.04,
+      "speedup_vs_fp32": 0.97
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+# experiment: balance-v2
+# started:    20260913T104314Z
+# host:       homedev-lan
+# command:    bench/balance.py --scales 0.275,0.5,1.0,2.0 --inh-gains 1,4,8,16
+# code:       47cd079
+
+kick 2% of cells for 50 ms, then
+no noise and no input for 600 ms. Persisting activity
+means the network is driving itself.
+
+    w_syn   inh  late Hz  active%  Hz if active  gap/sd  verdict
+    0.275   1.0    11.41    11.3%         100.9    19.1  SUSTAINED
+    0.275   4.0     1.06     2.3%          45.3     9.5  SUSTAINED
+    0.275   8.0     0.32     1.2%          27.0     7.5  SUSTAINED
+    0.275  16.0     0.00     0.4%           1.7     7.1  died
+    0.500   1.0    19.26    17.0%         113.0    11.2  SUSTAINED
+    0.500   4.0     1.87     5.1%          35.7     4.5  SUSTAINED
+    0.500   8.0     0.62     2.5%          25.8     3.3  SUSTAINED
+    0.500  16.0     0.24     2.7%          10.6     2.5  SUSTAINED
+    1.000   1.0    29.35    23.1%         127.7     9.1  SUSTAINED
+    1.000   4.0     2.98     8.7%          33.6     2.9  SUSTAINED
+    1.000   8.0     1.46     7.0%          18.9     1.9  SUSTAINED
+    1.000  16.0     0.53     5.8%          11.0     1.2  SUSTAINED
+    2.000   1.0    41.37    27.0%         153.2     7.5  SUSTAINED
+    2.000   4.0     4.45    14.4%          30.4     2.0  SUSTAINED
+    2.000   8.0     2.39    11.2%          20.2     1.5  SUSTAINED
+    2.000  16.0     2.31    10.6%          19.4     1.1  SUSTAINED
+
+wrote out/balance.json
+
+# exit status: 0
+# finished:    20260913T104333Z

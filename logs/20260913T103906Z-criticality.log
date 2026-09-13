@@ -1,0 +1,30 @@
+# experiment: criticality
+# started:    20260913T103906Z
+# host:       homedev-lan
+# command:    bench/criticality.py --seconds 3
+# code:       47cd079
+
+/home/annelo/Projects/flybrain/bench/criticality.py:62: RuntimeWarning: Mean of empty slice
+  empty = float((binned == 0).mean())
+/home/annelo/Projects/flybrain/.venv/lib/python3.11/site-packages/numpy/_core/_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+published weight 0.275 mV, ours 0.075 mV
+3 s of spontaneous activity per condition, background noise calibrated to ~0.5 Hz each time
+
+    w_syn  rate Hz  spk/step    sigma  empty bins  avalanches  size exp
+    0.050    1.011       0.0      n/a        nan%           0       n/a
+    0.075    1.523       0.0      n/a        nan%           0       n/a
+    0.100    2.418       0.0      n/a        nan%           0       n/a
+    0.150    4.805       0.0      n/a        nan%           0       n/a
+    0.275   11.951       0.0      n/a        nan%           0       n/a
+
+reading these:
+  sigma < 1  an input dies out; sigma ~ 1  it crosses the network;
+  sigma > 1  it runs away. Critical branching predicts a size
+  exponent near 1.5; a dead or saturated network has no avalanches
+  to fit at all.
+
+wrote out/criticality.json
+
+# exit status: 0
+# finished:    20260913T103926Z

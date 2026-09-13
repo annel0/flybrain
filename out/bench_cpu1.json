@@ -1,0 +1,21 @@
+{
+  "graph": "real",
+  "neurons": 166700,
+  "edges": 25582938,
+  "device": "cpu",
+  "mode": "harness",
+  "steps": 200,
+  "dt_ms": 0.1,
+  "rows": [
+    {
+      "batch": 1,
+      "wall_s": 0.074,
+      "sim_speed_per_replica": 0.271,
+      "throughput_x_realtime": 0.27,
+      "mean_rate_hz": 4.98,
+      "syn_events_per_sim_s": 127484300,
+      "state_bandwidth_GBs": 10.8,
+      "gpu_mem_GiB": null
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "glomerulus": "DA1",
+  "orn_cells": 204,
+  "poisson_hz": 150.0,
+  "weight_per_synapse_mV": 0.075,
+  "baseline_mean_hz": 0.0,
+  "response_mean_hz": 1.1566886901855469,
+  "kenyon_cells": 4064,
+  "kenyon_active": 228,
+  "kenyon_active_percent": 5.610236220472441,
+  "top_responders": [
+    {
+      "type": "lLN2T_a",
+      "cells": 5,
+      "delta_hz": 362.79998779296875
+    },
+    {
+      "type": "lLN1_bc",
+      "cells": 30,
+      "delta_hz": 357.70001220703125
+    },
+    {
+      "type": "lLN2F_b",
+      "cells": 4,
+      "delta_hz": 352.5
+    },
+    {
+      "type": "lLN2X04",
+      "cells": 4,
+      "delta_hz": 349.5
+    },
+    {
+      "type": "lLN2X05",
+      "cells": 4,
+      "delta_hz": 337.75
+    },
+    {
+      "type": "lLN2T_e",
+      "cells": 4,
+      "delta_hz": 332.25
+    },
+    {
+      "type": "lLN2P_a",
+      "cells": 7,
+      "delta_hz": 326.71429443359375
+    },
+    {
+      "type": "lLN2F_a",
+      "cells": 4,
+      "delta_hz": 325.0
+    },
+    {
+      "type": "lLN2T_c",
+      "cells": 4,
+      "delta_hz": 318.5
+    },
+    {
+      "type": "lLN2P_c",
+      "cells": 9,
+      "delta_hz": 314.3333435058594
+    },
+    {
+      "type": "lLN2X11",
+      "cells": 4,
+      "delta_hz": 303.0
+    },
+    {
+      "type": "lLN2P_b",
+      "cells": 12,
+      "delta_hz": 292.9166564941406
+    },
+    {
+      "type": "lLN2X12",
+      "cells": 11,
+      "delta_hz": 286.81817626953125
+    },
+    {
+      "type": "lLN2T_d",
+      "cells": 4,
+      "delta_hz": 257.5
+    },
+    {
+      "type": "lLN2R_a",
+      "cells": 6,
+      "delta_hz": 205.3333282470703
+    },
+    {
+      "type": "DA1_lPN",
+      "cells": 13,
+      "delta_hz": 193.53846740722656
+    },
+    {
+      "type": "M_l2PNm16",
+      "cells": 4,
+      "delta_hz": 189.25
+    },
+    {
+      "type": "lLN2T_b",
+      "cells": 4,
+      "delta_hz": 187.25
+    },
+    {
+      "type": "DL1_adPN",
+      "cells": 4,
+      "delta_hz": 175.75
+    },
+    {
+      "type": "DM2_lPN",
+      "cells": 4,
+      "delta_hz": 163.25
+    },
+    {
+      "type": "VC5_lvPN",
+      "cells": 6,
+      "delta_hz": 155.8333282470703
+    },
+    {
+      "type": "VA3_adPN",
+      "cells": 4,
+      "delta_hz": 153.5
+    },
+    {
+      "type": "DL2v_adPN",
+      "cells": 8,
+      "delta_hz": 152.5
+    },
+    {
+      "type": "CB3417",
+      "cells": 10,
+      "delta_hz": 152.0
+    },
+    {
+      "type": "M_l2PN3t18",
+      "cells": 4,
+      "delta_hz": 148.75
+    }
+  ],
+  "source": "Shiu, Sterne et al., Nature 634:210-219 (2024); code github.com/philshiu/Drosophila_brain_model"
+}

@@ -1,0 +1,61 @@
+{
+  "threshold_above_rest_mV": 7.0,
+  "dt_ms": 0.1,
+  "rows": [
+    {
+      "w_syn": 0.05,
+      "spontaneous_hz": 0.5820785760879517,
+      "noise_sigma": 0.214111328125,
+      "mean_u_mV": 0.021990273147821426,
+      "sd_u_mV": 1.969584584236145,
+      "gap_mV": 6.9780097007751465,
+      "gap_in_sd_median": 3.5674562454223633,
+      "fraction_within_1sd": 0.0,
+      "cells_measured": 166700
+    },
+    {
+      "w_syn": 0.075,
+      "spontaneous_hz": 0.747780442237854,
+      "noise_sigma": 0.1875,
+      "mean_u_mV": 0.05076964944601059,
+      "sd_u_mV": 1.7483142614364624,
+      "gap_mV": 6.949230670928955,
+      "gap_in_sd_median": 4.037915229797363,
+      "fraction_within_1sd": 0.0,
+      "cells_measured": 166700
+    },
+    {
+      "w_syn": 0.1,
+      "spontaneous_hz": 0.447735458612442,
+      "noise_sigma": 0.186767578125,
+      "mean_u_mV": -0.029187653213739395,
+      "sd_u_mV": 1.7661323547363281,
+      "gap_mV": 7.02918815612793,
+      "gap_in_sd_median": 4.047606945037842,
+      "fraction_within_1sd": 0.0,
+      "cells_measured": 166695
+    },
+    {
+      "w_syn": 0.15,
+      "spontaneous_hz": 0.013032393530011177,
+      "noise_sigma": 0.166748046875,
+      "mean_u_mV": -0.005203945096582174,
+      "sd_u_mV": 1.5484135150909424,
+      "gap_mV": 7.005203723907471,
+      "gap_in_sd_median": 4.5844407081604,
+      "fraction_within_1sd": 0.0,
+      "cells_measured": 166700
+    },
+    {
+      "w_syn": 0.275,
+      "spontaneous_hz": 0.002654469106346369,
+      "noise_sigma": 0.154296875,
+      "mean_u_mV": -2.0363681316375732,
+      "sd_u_mV": 2.8862345218658447,
+      "gap_mV": 9.036367416381836,
+      "gap_in_sd_median": 4.232564449310303,
+      "fraction_within_1sd": 0.0008158368291333318,
+      "cells_measured": 166700
+    }
+  ]
+}

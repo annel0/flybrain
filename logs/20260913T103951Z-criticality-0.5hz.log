@@ -1,0 +1,26 @@
+# experiment: criticality-0.5hz
+# started:    20260913T103951Z
+# host:       homedev-lan
+# command:    bench/criticality.py --seconds 3 --target-hz 0.5 --tag _0p5hz
+# code:       47cd079
+
+published weight 0.275 mV, ours 0.075 mV
+3 s of spontaneous activity per condition, background noise calibrated to ~0.5 Hz each time
+
+    w_syn  rate Hz  spk/step    sigma  empty bins  avalanches  size exp
+    0.050    1.011      16.9    0.943        0.0%           1       n/a
+    0.075    1.523      25.4    0.961        0.0%           1       n/a
+    0.100    2.418      40.3    0.976        0.0%           1       n/a
+    0.150    4.805      80.1    0.989        4.8%         740      1.68
+    0.275   11.956     199.3    0.995        0.0%           1       n/a
+
+reading these:
+  sigma < 1  an input dies out; sigma ~ 1  it crosses the network;
+  sigma > 1  it runs away. Critical branching predicts a size
+  exponent near 1.5; a dead or saturated network has no avalanches
+  to fit at all.
+
+wrote out/criticality_0p5hz.json
+
+# exit status: 0
+# finished:    20260913T104013Z

@@ -1,0 +1,111 @@
+{
+  "neurons": 166700,
+  "edges": 25582938,
+  "sim_seconds": 10.0,
+  "wall_s": 4.05162210110575,
+  "speed_x_realtime": 2.4681472631099646,
+  "unoptimised_x_realtime": 0.2549124005864912,
+  "optimised_x_realtime": 2.368268050380517,
+  "speedup": 9.290517232318674,
+  "mean_rate_hz": 5.190978527069092,
+  "silent_cells": 135108,
+  "drift_percent": 1.3766930821406542,
+  "by_superclass": [
+    {
+      "superclass": "ENS",
+      "cells": 50,
+      "mean_hz": 2.049999952316284,
+      "silent_frac": 0.9
+    },
+    {
+      "superclass": "ascending_neuron",
+      "cells": 1846,
+      "mean_hz": 4.5152764320373535,
+      "silent_frac": 0.7795232936078007
+    },
+    {
+      "superclass": "cb_endocrine",
+      "cells": 72,
+      "mean_hz": 6.284722328186035,
+      "silent_frac": 0.75
+    },
+    {
+      "superclass": "cb_intrinsic",
+      "cells": 32164,
+      "mean_hz": 9.76037883758545,
+      "silent_frac": 0.7376570078348464
+    },
+    {
+      "superclass": "cb_motor",
+      "cells": 107,
+      "mean_hz": 5.599999904632568,
+      "silent_frac": 0.6728971962616822
+    },
+    {
+      "superclass": "cb_sensory",
+      "cells": 4868,
+      "mean_hz": 4.526540279388428,
+      "silent_frac": 0.8305258833196385
+    },
+    {
+      "superclass": "descending_neuron",
+      "cells": 1314,
+      "mean_hz": 6.735540390014648,
+      "silent_frac": 0.7184170471841704
+    },
+    {
+      "superclass": "ol_intrinsic",
+      "cells": 89403,
+      "mean_hz": 3.9541244506835938,
+      "silent_frac": 0.8356766551458005
+    },
+    {
+      "superclass": "ol_sensory",
+      "cells": 6098,
+      "mean_hz": 4.070531368255615,
+      "silent_frac": 0.8379796654640865
+    },
+    {
+      "superclass": "sensory_ascending",
+      "cells": 537,
+      "mean_hz": 4.372812271118164,
+      "silent_frac": 0.8156424581005587
+    },
+    {
+      "superclass": "visual_centrifugal",
+      "cells": 563,
+      "mean_hz": 6.5952043533325195,
+      "silent_frac": 0.7264653641207816
+    },
+    {
+      "superclass": "visual_projection",
+      "cells": 9201,
+      "mean_hz": 3.8435606956481934,
+      "silent_frac": 0.834039778284969
+    },
+    {
+      "superclass": "vnc_efferent",
+      "cells": 94,
+      "mean_hz": 7.8223395347595215,
+      "silent_frac": 0.648936170212766
+    },
+    {
+      "superclass": "vnc_intrinsic",
+      "cells": 13161,
+      "mean_hz": 4.496010780334473,
+      "silent_frac": 0.7968239495479067
+    },
+    {
+      "superclass": "vnc_motor",
+      "cells": 708,
+      "mean_hz": 7.666383743286133,
+      "silent_frac": 0.6313559322033898
+    },
+    {
+      "superclass": "vnc_sensory",
+      "cells": 6370,
+      "mean_hz": 3.9391839504241943,
+      "silent_frac": 0.83861852433281
+    }
+  ]
+}

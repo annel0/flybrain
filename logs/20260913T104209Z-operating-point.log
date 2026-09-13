@@ -1,0 +1,26 @@
+# experiment: operating-point
+# started:    20260913T104209Z
+# host:       homedev-lan
+# command:    bench/operating_point.py
+# code:       47cd079
+
+threshold sits 7.0 mV above rest
+distance to threshold measured in each cell's own fluctuation width;
+balanced-network theory expects order 1, not order 10
+
+    w_syn  spont Hz   mean u    sd u   gap mV   gap/sd  within 1sd
+    0.050     0.582    0.022   1.970     6.98      3.6        0.0%
+    0.075     0.748    0.051   1.748     6.95      4.0        0.0%
+    0.100     0.448   -0.029   1.766     7.03      4.0        0.0%
+    0.150     0.013   -0.005   1.548     7.01      4.6        0.0%
+    0.275     0.003   -2.036   2.886     9.04      4.2        0.1%
+
+'gap/sd' is the median cell's distance to threshold in its own
+fluctuation widths. At 1 or 2 a cell is responsive to its inputs;
+at 10 or more it is effectively deaf, and nothing short of massive
+synchrony will move it.
+
+wrote out/operating_point.json
+
+# exit status: 0
+# finished:    20260913T104232Z

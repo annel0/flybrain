@@ -1,0 +1,49 @@
+{
+  "neurons": 166700,
+  "edges": 25582938,
+  "rate_hz": 4.840731620788574,
+  "rows": [
+    {
+      "batch": 4,
+      "dtype": "fp32",
+      "us_per_step": 63.6,
+      "aggregate_x_realtime": 6.28,
+      "gpu_mem_GiB": 0.77
+    },
+    {
+      "batch": 4,
+      "dtype": "fp16",
+      "us_per_step": 44.8,
+      "aggregate_x_realtime": 8.93,
+      "gpu_mem_GiB": 0.38
+    },
+    {
+      "batch": 16,
+      "dtype": "fp32",
+      "us_per_step": 264.2,
+      "aggregate_x_realtime": 6.06,
+      "gpu_mem_GiB": 0.41
+    },
+    {
+      "batch": 16,
+      "dtype": "fp16",
+      "us_per_step": 186.7,
+      "aggregate_x_realtime": 8.57,
+      "gpu_mem_GiB": 0.38
+    },
+    {
+      "batch": 64,
+      "dtype": "fp32",
+      "us_per_step": 1141.3,
+      "aggregate_x_realtime": 5.61,
+      "gpu_mem_GiB": 0.5
+    },
+    {
+      "batch": 64,
+      "dtype": "fp16",
+      "us_per_step": 788.9,
+      "aggregate_x_realtime": 8.11,
+      "gpu_mem_GiB": 0.4
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "glomerulus": "DA1",
+  "poisson_hz": 150.0,
+  "min_synapses": 1,
+  "rows": [
+    {
+      "w_syn": 0.06,
+      "kc_active_frac": 0.01328740157480315,
+      "kc_mean_hz": 0.19635826349258423,
+      "net_mean_hz": 0.7017225623130798,
+      "max_hz": 356.0
+    },
+    {
+      "w_syn": 0.07,
+      "kc_active_frac": 0.039124015748031496,
+      "kc_mean_hz": 0.7027559280395508,
+      "net_mean_hz": 0.8895829319953918,
+      "max_hz": 370.0
+    },
+    {
+      "w_syn": 0.075,
+      "kc_active_frac": 0.05585629921259842,
+      "kc_mean_hz": 1.0816929340362549,
+      "net_mean_hz": 0.9830746650695801,
+      "max_hz": 376.0
+    },
+    {
+      "w_syn": 0.08,
+      "kc_active_frac": 0.08095472440944881,
+      "kc_mean_hz": 1.6166338920593262,
+      "net_mean_hz": 1.0836056470870972,
+      "max_hz": 382.0
+    },
+    {
+      "w_syn": 0.09,
+      "kc_active_frac": 0.1377952755905512,
+      "kc_mean_hz": 3.1417322158813477,
+      "net_mean_hz": 1.3044036626815796,
+      "max_hz": 388.0
+    },
+    {
+      "w_syn": 0.1,
+      "kc_active_frac": 0.21358267716535434,
+      "kc_mean_hz": 5.531988143920898,
+      "net_mean_hz": 1.5572746992111206,
+      "max_hz": 394.0
+    }
+  ],
+  "published_w_syn": 0.275,
+  "note": "published weight was fitted against FlyWire, not this dataset"
+}

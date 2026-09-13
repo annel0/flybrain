@@ -1,0 +1,73 @@
+{
+  "window_ms": 60.0,
+  "repeats": 24,
+  "dt_ms": 0.1,
+  "delay_ms": 1.8,
+  "rows": [
+    {
+      "w_syn": 0.05,
+      "descendants_mean": -0.5,
+      "descendants_sd": 1.9578900207451218,
+      "fraction_with_any_cascade": 0.041666666666666664,
+      "unperturbed_drift": 0,
+      "generation_0_self": 0.9166666666666666,
+      "generation_1": 0.0,
+      "generation_2": 0.0,
+      "generation_3": -0.041666666666666664,
+      "spontaneous_hz": 0.5820785760879517,
+      "noise_sigma": 0.214111328125
+    },
+    {
+      "w_syn": 0.075,
+      "descendants_mean": -1.2916666666666667,
+      "descendants_sd": 6.779129532780903,
+      "fraction_with_any_cascade": 0.08333333333333333,
+      "unperturbed_drift": 0,
+      "generation_0_self": 1.0,
+      "generation_1": 0.0,
+      "generation_2": 0.08333333333333333,
+      "generation_3": -0.041666666666666664,
+      "spontaneous_hz": 0.747780442237854,
+      "noise_sigma": 0.1875
+    },
+    {
+      "w_syn": 0.1,
+      "descendants_mean": -0.4583333333333333,
+      "descendants_sd": 3.6626398342664754,
+      "fraction_with_any_cascade": 0.08333333333333333,
+      "unperturbed_drift": 0,
+      "generation_0_self": 1.0,
+      "generation_1": 0.0,
+      "generation_2": 0.0,
+      "generation_3": 0.0,
+      "spontaneous_hz": 0.447735458612442,
+      "noise_sigma": 0.186767578125
+    },
+    {
+      "w_syn": 0.15,
+      "descendants_mean": -0.041666666666666664,
+      "descendants_sd": 0.45452967144315476,
+      "fraction_with_any_cascade": 0.041666666666666664,
+      "unperturbed_drift": 0,
+      "generation_0_self": 1.0,
+      "generation_1": 0.0,
+      "generation_2": 0.0,
+      "generation_3": 0.0,
+      "spontaneous_hz": 0.013032393530011177,
+      "noise_sigma": 0.166748046875
+    },
+    {
+      "w_syn": 0.275,
+      "descendants_mean": 138.41666666666666,
+      "descendants_sd": 494.7500982538783,
+      "fraction_with_any_cascade": 0.08333333333333333,
+      "unperturbed_drift": 0,
+      "generation_0_self": 1.0,
+      "generation_1": 0.0,
+      "generation_2": 0.08333333333333333,
+      "generation_3": 0.08333333333333333,
+      "spontaneous_hz": 0.002654469106346369,
+      "noise_sigma": 0.154296875
+    }
+  ]
+}

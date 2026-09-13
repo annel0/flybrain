@@ -1,0 +1,25 @@
+# experiment: one-spike
+# started:    20260913T104031Z
+# host:       homedev-lan
+# command:    bench/one_spike.py
+# code:       47cd079
+
+one forced spike, 60 ms window, 12 source cells per condition
+published weight 0.275 mV, ours 0.075 mV
+
+    w_syn  rate Hz  descendants      +-   drift   gen 1   gen 2   gen 3
+    0.050    0.475          0.8     0.4       0     0.9     0.0     0.0
+    0.075    0.672          9.0    24.2       0     0.9     0.0     0.1
+    0.100    0.100          4.4    10.8       0     1.0    -0.1     0.0
+    0.150    0.036         -1.1     7.5       0     1.0     0.0     0.0
+    0.275    0.531       -200.2   201.7       0   -30.6    15.2    49.4
+
+'drift' is how far two identical unperturbed runs diverge over the
+same window: the floor below which a cascade cannot be distinguished.
+Generations are counted in axonal delays; the ratio between them is
+the branching ratio per synaptic step.
+
+wrote out/one_spike.json
+
+# exit status: 0
+# finished:    20260913T104054Z

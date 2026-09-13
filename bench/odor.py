@@ -35,10 +35,12 @@ def main():
     ap.add_argument("--rate", type=float, default=P.POISSON_RATE_HZ)
     ap.add_argument("--seconds", type=float, default=1.0)
     ap.add_argument("--scale", type=float, default=P.WEIGHT_PER_SYNAPSE_MV)
+    ap.add_argument("--inh-gain", type=float, default=1.0,
+                    help="inhibitory strength relative to excitatory, per synapse")
     ap.add_argument("--out", default="out/odor.json")
     a = ap.parse_args()
 
-    sim = FlySim(scale=a.scale, delay_mode="published")
+    sim = FlySim(scale=a.scale, delay_mode="published", inh_gain=a.inh_gain)
     ct = sim.cell_type
     orn = np.char.startswith(ct, f"ORN_{a.glomerulus}")
     kc = np.char.startswith(ct, "KC")

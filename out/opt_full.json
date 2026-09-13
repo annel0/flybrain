@@ -1,0 +1,39 @@
+{
+  "neurons": 166700,
+  "edges": 25582938,
+  "batch": 64,
+  "mean_rate_hz": 4.840731620788574,
+  "verify_corr": 0.9999999999999999,
+  "rows": [
+    {
+      "variant": "v0  torch.compile + torch scatter",
+      "us_per_step": 2376.8,
+      "speedup_vs_v0": 1.0,
+      "aggregate_x_realtime": 2.69
+    },
+    {
+      "variant": "v1  triton membrane + torch scatter",
+      "us_per_step": 2672.3,
+      "speedup_vs_v0": 0.889,
+      "aggregate_x_realtime": 2.39
+    },
+    {
+      "variant": "v2  + compact spike list",
+      "us_per_step": 2252.9,
+      "speedup_vs_v0": 1.055,
+      "aggregate_x_realtime": 2.84
+    },
+    {
+      "variant": "v3  + triton scatter (no host sync)",
+      "us_per_step": 1345.2,
+      "speedup_vs_v0": 1.767,
+      "aggregate_x_realtime": 4.76
+    },
+    {
+      "variant": "v4  + CUDA graph",
+      "us_per_step": 1368.5,
+      "speedup_vs_v0": 1.737,
+      "aggregate_x_realtime": 4.68
+    }
+  ]
+}

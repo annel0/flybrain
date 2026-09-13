@@ -1,0 +1,27 @@
+{
+  "neurons": 166700,
+  "spontaneous_hz": 0.0,
+  "noise_sigma": 0.0,
+  "mean_rate_hz": 1.2360788583755493,
+  "wall_s": 3.233403488062322,
+  "speed_x_realtime": 0.9278149204316615,
+  "protocol": {
+    "engineered_not_measured": [
+      "uniform LIF parameters for every cell type",
+      "synaptic sign from predicted transmitter only, no receptor kinetics",
+      "axonal delay per source cell, not per synapse",
+      "synaptic weight = synapse count x a single global scale factor",
+      "light is a step change in photoreceptor drive, not a phototransduction model",
+      "photoreceptors spike here; real ones are graded, non-spiking cells",
+      "spontaneous activity comes from injected Gaussian noise; the published model has none",
+      "photoreceptor hemisphere inferred from target geometry, not annotated"
+    ],
+    "noise_sigma": 0.0,
+    "stimulus_amplitude": 14.0,
+    "photoreceptors_left": 2106,
+    "photoreceptors_right": 3015,
+    "weight_scale_applied": true,
+    "dt_ms": 0.1,
+    "ring_slots": 32
+  }
+}

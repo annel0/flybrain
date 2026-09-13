@@ -1,0 +1,31 @@
+{
+  "graph": "real",
+  "neurons": 166700,
+  "edges": 25582938,
+  "device": "cpu",
+  "mode": "harness",
+  "steps": 200,
+  "dt_ms": 0.1,
+  "rows": [
+    {
+      "batch": 1,
+      "wall_s": 0.049,
+      "sim_speed_per_replica": 0.409,
+      "throughput_x_realtime": 0.41,
+      "mean_rate_hz": 4.98,
+      "syn_events_per_sim_s": 126933350,
+      "state_bandwidth_GBs": 16.3,
+      "gpu_mem_GiB": null
+    },
+    {
+      "batch": 8,
+      "wall_s": 0.626,
+      "sim_speed_per_replica": 0.032,
+      "throughput_x_realtime": 0.26,
+      "mean_rate_hz": 4.98,
+      "syn_events_per_sim_s": 127231762,
+      "state_bandwidth_GBs": 10.2,
+      "gpu_mem_GiB": null
+    }
+  ]
+}

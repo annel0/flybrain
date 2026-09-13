@@ -46,7 +46,7 @@ class FlySim:
     def __init__(self, graph="data/malecns_v1/graph.npz",
                  delays="data/malecns_v1/delays.npz", device="cuda",
                  scale=P.WEIGHT_PER_SYNAPSE_MV, cap=1 << 14, batch=1,
-                 delay_mode="published", min_synapses=1):
+                 delay_mode="published", min_synapses=1, inh_gain=1.0):
         z = np.load(graph, allow_pickle=False)
         crow, col, val, _ = load_graph(graph)
         self.n = n = len(crow) - 1
@@ -67,7 +67,12 @@ class FlySim:
         self.min_synapses = min_synapses
         self.crow = torch.from_numpy(crow).to(self.dev).int()
         self.col = torch.from_numpy(col).to(self.dev).int()
-        self.val = (torch.from_numpy(val).to(self.dev) * scale)
+        # Balanced-network theory needs inhibition and excitation scaled
+        # separately; the connectome fixes who inhibits whom, not how hard.
+        w = torch.from_numpy(val).to(self.dev) * scale
+        w[w < 0] *= inh_gain
+        self.val = w
+        self.inh_gain = inh_gain
         if delay_mode == "published":
             # One fixed delay for every connection, as in the source model.
             d = np.full(n, int(round(P.DELAY_MS / DT)), dtype=np.int8)
@@ -83,6 +88,7 @@ class FlySim:
         self.ring_cnt = torch.zeros(RING_SLOTS, dtype=torch.int32, device=self.dev)
         self.counts = torch.zeros(n, device=self.dev)
         self.force = torch.zeros(n, device=self.dev)
+        self.history = None      # optional per-step population spike count
         self.refrac_steps = int(round(REFRAC_MS / DT))
         self.decay = float(np.exp(-DT / TAU_S))
         self.alpha = DT / TAU_M
@@ -160,6 +166,10 @@ class FlySim:
             tally_slot[(triton.cdiv(self.cap, 1024),)](
                 self.ring, self.ring_cnt, self.counts, self.n, self.cap, slot,
                 BLOCK=1024)
+        if self.history is not None and self.t < len(self.history):
+            # Spikes delivered this step, i.e. those emitted one axonal delay
+            # earlier. A constant lag, which is harmless for these statistics.
+            self.history[self.t] = self.ring_cnt[slot]
         self.ring_cnt[slot] = 0
         self.t += 1
 
@@ -170,6 +180,10 @@ class FlySim:
             idx = torch.from_numpy(np.flatnonzero(mask)).to(self.dev)
             self.force[idx] = rate_hz * DT / 1000.0
         return int(mask.sum()) if mask is not None else 0
+
+    def record_history(self, steps):
+        self.history = torch.zeros(steps, dtype=torch.int32, device=self.dev)
+        return self.history
 
     def reset(self):
         self.u.zero_(); self.g.zero_(); self.r.zero_()

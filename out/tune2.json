@@ -1,0 +1,15 @@
+{
+  "fp32 refractory (v3)": 988.8,
+  "int8 refractory (v5)": 747.8,
+  "scatter plain EBLOCK=512": 261.7,
+  "scatter lanes=1 EBLOCK=128": 277.8,
+  "scatter lanes=1 EBLOCK=512": 242.7,
+  "scatter lanes=2 EBLOCK=128": 326.3,
+  "scatter lanes=2 EBLOCK=512": 327.9,
+  "scatter lanes=4 EBLOCK=128": 452.0,
+  "scatter lanes=4 EBLOCK=512": 470.0,
+  "scatter lanes=8 EBLOCK=128": 745.9,
+  "scatter lanes=8 EBLOCK=512": 737.3,
+  "scatter lanes=16 EBLOCK=128": 1336.4,
+  "scatter lanes=16 EBLOCK=512": 1340.3
+}

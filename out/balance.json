@@ -1,0 +1,184 @@
+{
+  "kick_ms": 50.0,
+  "run_ms": 600.0,
+  "kick_fraction": 0.02,
+  "threshold_above_rest_mV": 7.0,
+  "rows": [
+    {
+      "w_syn": 0.275,
+      "inh_gain": 1.0,
+      "rate_early_hz": 11.36616676664667,
+      "rate_late_hz": 11.410767846430714,
+      "gap_in_sd": 19.1446590423584,
+      "participating": 0.11289142171565687,
+      "rate_of_active_hz": 100.9168930053711,
+      "ratio": 1.0039240212377425,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 0.275,
+      "inh_gain": 4.0,
+      "rate_early_hz": 1.066616676664667,
+      "rate_late_hz": 1.0596580683863226,
+      "gap_in_sd": 9.459775924682617,
+      "participating": 0.023473305338932212,
+      "rate_of_active_hz": 45.31986999511719,
+      "ratio": 0.9934759989876549,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 0.275,
+      "inh_gain": 8.0,
+      "rate_early_hz": 0.34727054589082185,
+      "rate_late_hz": 0.31520695860827835,
+      "gap_in_sd": 7.525679588317871,
+      "participating": 0.01205758848230354,
+      "rate_of_active_hz": 26.992534637451172,
+      "ratio": 0.907669718431508,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 0.275,
+      "inh_gain": 16.0,
+      "rate_early_hz": 0.018176364727054587,
+      "rate_late_hz": 0.0,
+      "gap_in_sd": 7.098719596862793,
+      "participating": 0.003617276544691062,
+      "rate_of_active_hz": 1.6749587059020996,
+      "ratio": 0.0,
+      "verdict": "died"
+    },
+    {
+      "w_syn": 0.5,
+      "inh_gain": 1.0,
+      "rate_early_hz": 19.189772045590882,
+      "rate_late_hz": 19.255458908218355,
+      "gap_in_sd": 11.158000946044922,
+      "participating": 0.17013197360527896,
+      "rate_of_active_hz": 112.9611587524414,
+      "ratio": 1.0034230142219207,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 0.5,
+      "inh_gain": 4.0,
+      "rate_early_hz": 1.761367726454709,
+      "rate_late_hz": 1.8690461907618476,
+      "gap_in_sd": 4.545351028442383,
+      "participating": 0.050689862027594484,
+      "rate_of_active_hz": 35.65404510498047,
+      "ratio": 1.0611334377767183,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 0.5,
+      "inh_gain": 8.0,
+      "rate_early_hz": 0.6858128374325134,
+      "rate_late_hz": 0.616376724655069,
+      "gap_in_sd": 3.288668155670166,
+      "participating": 0.02510497900419916,
+      "rate_of_active_hz": 25.796894073486328,
+      "ratio": 0.8987535534659962,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 0.5,
+      "inh_gain": 16.0,
+      "rate_early_hz": 0.34622075584883016,
+      "rate_late_hz": 0.2391121775644871,
+      "gap_in_sd": 2.548663377761841,
+      "participating": 0.026520695860827833,
+      "rate_of_active_hz": 10.643519401550293,
+      "ratio": 0.6906350168933554,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 1.0,
+      "inh_gain": 1.0,
+      "rate_early_hz": 29.47600479904019,
+      "rate_late_hz": 29.352909418116372,
+      "gap_in_sd": 9.127659797668457,
+      "participating": 0.23054589082183563,
+      "rate_of_active_hz": 127.67024993896484,
+      "ratio": 0.9958238783796158,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 1.0,
+      "inh_gain": 4.0,
+      "rate_early_hz": 2.8338932213557286,
+      "rate_late_hz": 2.9759148170365926,
+      "gap_in_sd": 2.862977981567383,
+      "participating": 0.08740251949610078,
+      "rate_of_active_hz": 33.552616119384766,
+      "ratio": 1.0501153658897993,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 1.0,
+      "inh_gain": 8.0,
+      "rate_early_hz": 1.125134973005399,
+      "rate_late_hz": 1.4559688062387524,
+      "gap_in_sd": 1.91102135181427,
+      "participating": 0.07046790641871625,
+      "rate_of_active_hz": 18.85431671142578,
+      "ratio": 1.2940392407762848,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 1.0,
+      "inh_gain": 16.0,
+      "rate_early_hz": 0.8174565086982604,
+      "rate_late_hz": 0.5325434913017396,
+      "gap_in_sd": 1.2271032333374023,
+      "participating": 0.05815836832633473,
+      "rate_of_active_hz": 11.03300666809082,
+      "ratio": 0.651464005283628,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 2.0,
+      "inh_gain": 1.0,
+      "rate_early_hz": 41.194091181763646,
+      "rate_late_hz": 41.37222555488901,
+      "gap_in_sd": 7.460598945617676,
+      "participating": 0.269502099580084,
+      "rate_of_active_hz": 153.1613006591797,
+      "ratio": 1.0043242700109434,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 2.0,
+      "inh_gain": 4.0,
+      "rate_early_hz": 4.268176364727054,
+      "rate_late_hz": 4.450449910017996,
+      "gap_in_sd": 2.02522873878479,
+      "participating": 0.14350329934013198,
+      "rate_of_active_hz": 30.37253189086914,
+      "ratio": 1.0427052515442619,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 2.0,
+      "inh_gain": 8.0,
+      "rate_early_hz": 1.9728854229154167,
+      "rate_late_hz": 2.3867726454709057,
+      "gap_in_sd": 1.4878079891204834,
+      "participating": 0.11235152969406119,
+      "rate_of_active_hz": 20.249433517456055,
+      "ratio": 1.2097877645341768,
+      "verdict": "SUSTAINED"
+    },
+    {
+      "w_syn": 2.0,
+      "inh_gain": 16.0,
+      "rate_early_hz": 1.7512897420515896,
+      "rate_late_hz": 2.3059988002399523,
+      "gap_in_sd": 1.1230075359344482,
+      "participating": 0.10608278344331133,
+      "rate_of_active_hz": 19.361190795898438,
+      "ratio": 1.3167431664040559,
+      "verdict": "SUSTAINED"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "graph": "real (subgraph 10,000)",
+  "neurons": 10000,
+  "edges": 1245476,
+  "device": "cuda",
+  "mode": "harness",
+  "steps": 2000,
+  "dt_ms": 0.1,
+  "rows": [
+    {
+      "batch": 1,
+      "wall_s": 0.75,
+      "sim_speed_per_replica": 0.267,
+      "throughput_x_realtime": 0.27,
+      "mean_rate_hz": 5.0,
+      "syn_events_per_sim_s": 6217980,
+      "state_bandwidth_GBs": 0.6,
+      "gpu_mem_GiB": 0.01
+    },
+    {
+      "batch": 16,
+      "wall_s": 0.769,
+      "sim_speed_per_replica": 0.26,
+      "throughput_x_realtime": 4.16,
+      "mean_rate_hz": 5.0,
+      "syn_events_per_sim_s": 6238054,
+      "state_bandwidth_GBs": 10.0,
+      "gpu_mem_GiB": 0.02
+    },
+    {
+      "batch": 64,
+      "wall_s": 0.819,
+      "sim_speed_per_replica": 0.244,
+      "throughput_x_realtime": 15.62,
+      "mean_rate_hz": 5.0,
+      "syn_events_per_sim_s": 6237281,
+      "state_bandwidth_GBs": 37.5,
+      "gpu_mem_GiB": 0.03
+    },
+    {
+      "batch": 256,
+      "wall_s": 1.646,
+      "sim_speed_per_replica": 0.122,
+      "throughput_x_realtime": 31.11,
+      "mean_rate_hz": 5.0,
+      "syn_events_per_sim_s": 6229153,
+      "state_bandwidth_GBs": 74.7,
+      "gpu_mem_GiB": 0.06
+    }
+  ]
+}

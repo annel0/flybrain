@@ -31,9 +31,9 @@ import params as P
 from fly_sim import FlySim
 
 
-def probe(crow_scale, glom, seconds, rate, threshold_syn):
+def probe(crow_scale, glom, seconds, rate, threshold_syn, inh_gain=1.0):
     sim = FlySim(scale=crow_scale, delay_mode="published",
-                 min_synapses=threshold_syn)
+                 min_synapses=threshold_syn, inh_gain=inh_gain)
     ct = sim.cell_type
     orn = np.char.startswith(ct, f"ORN_{glom}")
     kc = np.char.startswith(ct, "KC")
@@ -56,17 +56,20 @@ def main():
     ap.add_argument("--min-synapses", type=int, default=1,
                     help="drop connections weaker than this (FlyWire convention is 5)")
     ap.add_argument("--scales", default="0.275,0.1,0.05,0.02,0.01,0.005,0.002,0.001")
+    ap.add_argument("--inh-gain", type=float, default=1.0,
+                    help="inhibitory strength relative to excitatory, per synapse")
     ap.add_argument("--out", default="out/fit_weight.json")
     a = ap.parse_args()
 
     print(f"target: an odour should recruit a few percent of Kenyon cells")
-    print(f"driving ORN_{a.glomerulus} at {a.rate:.0f} Hz, "
-          f"connection threshold >={a.min_synapses} synapses\n")
+    print(f"driving ORN_{a.glomerulus} at {a.rate:.0f} Hz, inhibitory gain "
+          f"x{a.inh_gain:g}, connection threshold >={a.min_synapses} synapses\n")
     print(f"  {'w_syn mV':>9}  {'KC active':>10}  {'KC mean':>9}  "
           f"{'net mean':>9}  {'max':>8}")
     rows = []
     for sc in [float(x) for x in a.scales.split(",")]:
-        r, sim = probe(sc, a.glomerulus, a.seconds, a.rate, a.min_synapses)
+        r, sim = probe(sc, a.glomerulus, a.seconds, a.rate, a.min_synapses,
+                       a.inh_gain)
         rows.append({"w_syn": sc, **r})
         print(f"  {sc:9.4f}  {100*r['kc_active_frac']:9.1f}%  "
               f"{r['kc_mean_hz']:8.2f}  {r['net_mean_hz']:8.3f}  "
