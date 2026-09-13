@@ -1,0 +1,101 @@
+{
+  "graph": "data/flywire_783_shiu/graph.npz",
+  "rate_hz": 100.0,
+  "runs": 10,
+  "w_syn": 0.275,
+  "correlation": 0.9698807618282442,
+  "median_ratio": 1.0054738918940225,
+  "rows": [
+    {
+      "neuron": "Zorro_l",
+      "published_hz": 102.2,
+      "ours_hz": 107.19999694824219,
+      "sd_hz": 1.2489995956420898,
+      "ratio": 1.0489236492000213
+    },
+    {
+      "neuron": "G2N-1_l",
+      "published_hz": 69.4,
+      "ours_hz": 59.20000076293945,
+      "sd_hz": 1.0770329236984253,
+      "ratio": 0.8530259475927875
+    },
+    {
+      "neuron": "Rattle_l",
+      "published_hz": 75.4,
+      "ours_hz": 77.19999694824219,
+      "sd_hz": 1.3266499042510986,
+      "ratio": 1.0238726385708512
+    },
+    {
+      "neuron": "Usnea_l",
+      "published_hz": 72.6,
+      "ours_hz": 81.9000015258789,
+      "sd_hz": 0.8306624293327332,
+      "ratio": 1.1280991945713348
+    },
+    {
+      "neuron": "Clavicle_l",
+      "published_hz": 54.0,
+      "ours_hz": 34.70000076293945,
+      "sd_hz": 1.187434196472168,
+      "ratio": 0.642592606721101
+    },
+    {
+      "neuron": "FMIn_l",
+      "published_hz": 61.3,
+      "ours_hz": 67.5999984741211,
+      "sd_hz": 0.800000011920929,
+      "ratio": 1.1027732214375383
+    },
+    {
+      "neuron": "MN9_r",
+      "published_hz": 68.0,
+      "ours_hz": 67.80000305175781,
+      "sd_hz": 2.891366481781006,
+      "ratio": 0.9970588684082031
+    },
+    {
+      "neuron": "Phantom_l",
+      "published_hz": 57.6,
+      "ours_hz": 58.400001525878906,
+      "sd_hz": 0.4898979663848877,
+      "ratio": 1.013888915379842
+    },
+    {
+      "neuron": "Roundup_l",
+      "published_hz": 46.3,
+      "ours_hz": 38.099998474121094,
+      "sd_hz": 1.445683240890503,
+      "ratio": 0.8228941355101749
+    },
+    {
+      "neuron": "Fdg_l",
+      "published_hz": 38.3,
+      "ours_hz": 42.20000076293945,
+      "sd_hz": 1.536229133605957,
+      "ratio": 1.101827696160299
+    },
+    {
+      "neuron": "MN6_r",
+      "published_hz": 31.7,
+      "ours_hz": 27.899999618530273,
+      "sd_hz": 1.9723082780838013,
+      "ratio": 0.8801261709315544
+    },
+    {
+      "neuron": "Fudog_l",
+      "published_hz": 0.5,
+      "ours_hz": 0.10000000149011612,
+      "sd_hz": 0.29999998211860657,
+      "ratio": NaN
+    },
+    {
+      "neuron": "Bract_l",
+      "published_hz": 5.1,
+      "ours_hz": 2.5,
+      "sd_hz": 1.3601471185684204,
+      "ratio": 0.4901960784313726
+    }
+  ]
+}

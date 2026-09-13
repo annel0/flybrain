@@ -1,0 +1,40 @@
+# experiment: replicate-shiu
+# started:    20260913T140148Z
+# host:       homedev-lan
+# command:    bench/replicate_shiu.py
+# code:       36731e1
+
+/home/annelo/Projects/flybrain/.venv/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1213: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+graph: 138,639 neurons, 15,091,983 connections
+sugar receptor neurons found: 20 of 21  missing [720575940620900446]
+protocol: 100 Hz Poisson, 10 runs of 1000 ms, w_syn 0.275 mV
+
+not present in this graph: ['MN9_l', 'TH-VUM']
+
+  neuron        published       ours      sd      diff   ratio
+  Zorro_l           102.2       94.0     1.5      -8.2    0.92
+  G2N-1_l            69.4       50.5     0.9     -18.9    0.73
+  Rattle_l           75.4       64.3     1.8     -11.1    0.85
+  Usnea_l            72.6       69.5     0.5      -3.1    0.96
+  Clavicle_l         54.0       27.0     1.1     -27.0    0.50
+  FMIn_l             61.3       59.8     1.1      -1.5    0.98
+  MN9_r              68.0       56.5     3.9     -11.5    0.83
+  Phantom_l          57.6       48.3     0.5      -9.3    0.84
+  Roundup_l          46.3       27.7     3.4     -18.6    0.60
+  Fdg_l              38.3       38.4     2.1      +0.1    1.00
+  MN6_r              31.7       22.4     1.7      -9.3    0.71
+  Fudog_l             0.5        0.0     0.0      -0.5     nan
+  Bract_l             5.1        2.1     1.1      -3.0    0.41
+
+  median ratio ours/published: 0.83   range 0.41 to 1.00
+  correlation across the fifteen neurons: 0.957
+
+  a correct engine should land close to 1.00 on the ratio and high
+  on the correlation. A systematic ratio away from 1 with a high
+  correlation points at one shared constant, not at the wiring.
+
+wrote out/replicate_shiu.json
+
+# exit status: 0
+# finished:    20260913T140207Z

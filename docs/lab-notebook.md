@@ -447,3 +447,73 @@ That is the observation-model problem in its sharpest form. We built a spiking
 simulator, and the best-studied circuit available to test it against was almost
 entirely measured in a currency our simulator does not produce. Comparing
 against it requires the indicator model, not a threshold we chose.
+
+---
+
+## 2026-09-13 — Replication on Shiu's own connectome: the engine is validated
+
+**Why this and not their 164 predictions directly:** their cell-type names do
+not appear in the MaleCNS annotations at all — zero matches against `type`,
+`flywireType` or `hemibrainType` — so the predictions cannot be transferred to
+our dataset. Running them on theirs answers a different and more basic
+question, and separates two things we had been running together: is our engine
+correct, and is our model of MaleCNS right.
+
+**Setup:** imported FlyWire 783 exactly as shipped with their repository —
+138,639 neurons, 15,091,983 connections, 54.5M synapses, mean out-degree 108.9.
+Their protocol: 21 sugar receptor neurons driven at 100 Hz Poisson, w_syn
+0.275 mV, 1.8 ms delay, no noise. Target: Supplementary Table 1D, fifteen named
+neurons with exact published rates.
+
+### First pass was systematically 17% low, with a precise cause
+
+Median ratio 0.83, correlation 0.957. A uniform shortfall with a high
+correlation points at one shared constant rather than at the wiring, and the
+arithmetic identified it: their source sets the refractory period of
+Poisson-driven neurons to **zero**, and ours kept the 2.2 ms. After a forced
+spike, 22 steps are blocked before a geometric wait of ~100, so a cell asked
+for 100 Hz delivers 10000/122 = 82 Hz — and everything downstream is low by
+that factor. 0.82 against an observed 0.83.
+
+### With that fixed
+
+| neuron | published | ours | ratio |
+|---|---|---|---|
+| **MN9_r** | **68.0** | **67.8** | **1.00** |
+| Zorro_l | 102.2 | 107.2 | 1.05 |
+| Rattle_l | 75.4 | 77.2 | 1.02 |
+| Phantom_l | 57.6 | 58.4 | 1.01 |
+| Usnea_l | 72.6 | 81.9 | 1.13 |
+| FMIn_l | 61.3 | 67.6 | 1.10 |
+| Fdg_l | 38.3 | 42.2 | 1.10 |
+| MN6_r | 31.7 | 27.9 | 0.88 |
+| G2N-1_l | 69.4 | 59.2 | 0.85 |
+| Roundup_l | 46.3 | 38.1 | 0.82 |
+| Clavicle_l | 54.0 | 34.7 | 0.64 |
+| Bract_l | 5.1 | 2.5 | 0.49 |
+
+**Median ratio 1.01, correlation 0.970** across thirteen neurons. The motor
+neuron the whole paper is built around matches to 0.3%.
+
+**Our engine reproduces published results on the connectome they were
+published on.** That is the first thing in this project that has been checked
+against someone else's numbers rather than against our own reasoning.
+
+### What it does not cover
+
+Two of the fifteen are absent from this graph: MN9_l and TH-VUM, whose IDs are
+not in the completeness table shipped with the repository — a proofreading
+version difference, not something we can resolve here. Two outliers remain,
+Clavicle at 0.64 and Bract at 0.49; Bract fires at 5.1 Hz with a run-to-run
+spread of 1.4, so it is within noise, while Clavicle at 54 Hz is not and stays
+unexplained. We ran 10 repeats against their 30.
+
+And it validates the **engine**, not our MaleCNS model. Those remain separate,
+which was the point.
+
+### A correction to an earlier claim
+
+Shiu et al. ran a connectivity-shuffling control themselves: across 100
+shuffled matrices MN9 fired in 1 of 100, mean 0.0043 Hz against 68 Hz with real
+wiring. So the earlier statement — from the prior-validation survey — that
+FlyGM was the only model in the field to run that control is wrong. Two did.

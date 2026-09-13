@@ -67,7 +67,13 @@ def membrane_delay(U, G, R, TONIC, FORCE, GRADED, ALPHA, DELAY, RING, RING_CNT,
     # Graded cells integrate and release continuously; they never spike, so
     # they are also never reset and never enter refractoriness.
     gr = tl.load(GRADED + n_off, mask=nmask, other=0)
-    s = ((u >= u_th) | (coin < pf)) & live & nmask & (gr == 0)
+    # A cell under Poisson drive is exempt from refractoriness, as in the
+    # source model, which sets the refractory period of driven neurons to
+    # zero. Without this the drive is throttled: at 100 Hz with a 2.2 ms
+    # refractory period a forced cell fires at about 82 Hz, and everything
+    # downstream is low by the same factor.
+    driven = pf > 0.0
+    s = ((u >= u_th) | (coin < pf)) & (live | driven) & nmask & (gr == 0)
     u = tl.where(s, u_reset, u)
     g = tl.where(s, 0.0, g)          # published model clears g on a spike
     r = tl.where(s, refrac_steps, tl.maximum(r - 1, 0))
