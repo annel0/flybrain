@@ -46,7 +46,8 @@ class FlySim:
     def __init__(self, graph="data/malecns_v1/graph.npz",
                  delays="data/malecns_v1/delays.npz", device="cuda",
                  scale=P.WEIGHT_PER_SYNAPSE_MV, cap=1 << 14, batch=1,
-                 delay_mode="published", min_synapses=1, inh_gain=1.0):
+                 delay_mode="published", min_synapses=1, inh_gain=1.0,
+                 dt=DT):
         z = np.load(graph, allow_pickle=False)
         crow, col, val, _ = load_graph(graph)
         self.n = n = len(crow) - 1
@@ -73,25 +74,36 @@ class FlySim:
         w[w < 0] *= inh_gain
         self.val = w
         self.inh_gain = inh_gain
+        # The timestep is ours, not the animal's. Everything derived from it
+        # is recomputed here so the discretisation can be varied and checked.
+        self.dt = float(dt)
         if delay_mode == "published":
-            # One fixed delay for every connection, as in the source model.
-            d = np.full(n, int(round(P.DELAY_MS / DT)), dtype=np.int8)
+            d = np.full(n, int(round(P.DELAY_MS / self.dt)), dtype=np.int16)
         else:
-            d = np.load(delays, allow_pickle=False)["delay_steps"].astype(np.int8)
+            ms = np.load(delays, allow_pickle=False)["delay_ms"]
+            d = np.maximum(1, np.round(ms / self.dt)).astype(np.int16)
         self.delay_mode = delay_mode
-        self.delay = torch.from_numpy(np.clip(d, 1, RING_SLOTS - 1)).to(self.dev)
+        # Ring must outlast the longest delay, and a power of two keeps the
+        # modulo cheap in the kernel.
+        self.ring_slots = int(triton.next_power_of_2(int(d.max()) + 2))
+        self.delay = torch.from_numpy(
+            np.clip(d, 1, self.ring_slots - 1).astype(np.int8)
+            if self.ring_slots <= 128 else np.clip(d, 1, 127).astype(np.int8)
+        ).to(self.dev)
 
         self.u = torch.zeros((batch, n), device=self.dev)
         self.g = torch.zeros((batch, n), device=self.dev)
         self.r = torch.zeros((batch, n), device=self.dev, dtype=torch.int8)
-        self.ring = torch.zeros(RING_SLOTS * cap, dtype=torch.int32, device=self.dev)
-        self.ring_cnt = torch.zeros(RING_SLOTS, dtype=torch.int32, device=self.dev)
+        self.ring = torch.zeros(self.ring_slots * cap, dtype=torch.int32,
+                                device=self.dev)
+        self.ring_cnt = torch.zeros(self.ring_slots, dtype=torch.int32,
+                                    device=self.dev)
         self.counts = torch.zeros(n, device=self.dev)
         self.force = torch.zeros(n, device=self.dev)
         self.history = None      # optional per-step population spike count
-        self.refrac_steps = int(round(REFRAC_MS / DT))
-        self.decay = float(np.exp(-DT / TAU_S))
-        self.alpha = DT / TAU_M
+        self.refrac_steps = int(round(REFRAC_MS / self.dt))
+        self.decay = float(np.exp(-self.dt / TAU_S))
+        self.alpha = self.dt / TAU_M
         self.grid_m = (triton.cdiv(n, BLOCK), batch)
         self.t = 0
 
@@ -152,13 +164,13 @@ class FlySim:
 
     # ---- one step --------------------------------------------------------
     def step(self, tonic, record=False):
-        slot = self.t % RING_SLOTS
+        slot = self.t % self.ring_slots
         membrane_delay[self.grid_m](
             self.u, self.g, self.r, tonic, self.force, self.delay,
             self.ring, self.ring_cnt,
             self.n, self.cap, self.t, float(self.decay), float(self.alpha),
             float(U_RESET), float(U_TH), self.refrac_steps,
-            float(self.sigma), int(self.seed), BLOCK=BLOCK, D=RING_SLOTS)
+            float(self.sigma), int(self.seed), BLOCK=BLOCK, D=self.ring_slots)
         deliver[(GRID, LANES)](
             self.ring, self.ring_cnt, self.crow, self.col, self.val, self.g,
             self.n, self.cap, slot, EBLOCK=EBLOCK, GRID=GRID, LANES=LANES)
@@ -178,7 +190,7 @@ class FlySim:
         self.force.zero_()
         if mask is not None and mask.any():
             idx = torch.from_numpy(np.flatnonzero(mask)).to(self.dev)
-            self.force[idx] = rate_hz * DT / 1000.0
+            self.force[idx] = rate_hz * self.dt / 1000.0
         return int(mask.sum()) if mask is not None else 0
 
     def record_history(self, steps):
@@ -191,18 +203,18 @@ class FlySim:
         self.t = 0
 
     def run(self, ms, phase_ms=None, record_bin_ms=None, warm=False):
-        steps = int(round(ms / DT))
+        steps = int(round(ms / self.dt))
         frames, labels = [], []
         prev = torch.zeros_like(self.counts)
         self.counts.zero_()
-        per_bin = int(round(record_bin_ms / DT)) if record_bin_ms else 0
+        per_bin = int(round(record_bin_ms / self.dt)) if record_bin_ms else 0
         t0 = time.perf_counter()
         for i in range(steps):
             if phase_ms is None:
                 tonic = self.drive["off"]
                 lab = "off"
             else:
-                k = int((i * DT) // phase_ms) % 2
+                k = int((i * self.dt) // phase_ms) % 2
                 lab = "left" if k == 0 else "right"
                 tonic = self.drive[lab]
             self.step(tonic, record=True)   # tally is cheap; always count
@@ -230,7 +242,8 @@ class FlySim:
             ],
             "noise_sigma": sigma, "stimulus_amplitude": stim_amp,
             "photoreceptors_left": self.n_left, "photoreceptors_right": self.n_right,
-            "weight_scale_applied": True, "dt_ms": DT, "ring_slots": RING_SLOTS,
+            "weight_scale_applied": True, "dt_ms": self.dt,
+            "ring_slots": self.ring_slots,
         }
 
 
@@ -286,7 +299,7 @@ def main():
     print(f"{sim.n:,} neurons | sensory {int(sim.is_sensory.sum()):,} "
           f"| photoreceptors {int(sim.is_photo.sum()):,}")
     print(f"delay steps: median {int(sim.delay.float().median())}, "
-          f"max {int(sim.delay.max())} (ring {RING_SLOTS})")
+          f"max {int(sim.delay.max())} (ring {sim.ring_slots})")
 
     print(f"hemispheres: {int(sim.left.sum()):,} left, {int(sim.right.sum()):,} "
           f"right (midline x={sim.midline:.0f}, photoreceptor side from targets)")

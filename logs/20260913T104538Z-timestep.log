@@ -1,0 +1,24 @@
+# experiment: timestep
+# started:    20260913T104538Z
+# host:       homedev-lan
+# command:    bench/timestep.py
+# code:       6ddcb9b
+
+w_syn 0.075 mV, inhibitory gain x1
+if 0.1 ms is fine enough, these columns are flat
+
+   dt ms  ring  delay  rfrc  self Hz  active%  odour Hz  KC act%   KC Hz    cost
+   0.200    16      9    11    0.967     1.7%     0.952     5.1%    0.96    0.4x
+   0.100    32     18    22    1.005     1.7%     0.983     5.6%    1.08    0.7x
+   0.050    64     36    44    1.036     1.8%     0.998     6.0%    1.15    1.4x
+   0.025   128     72    88    1.045     1.8%     1.005     6.1%    1.18    2.8x
+
+change relative to the 0.1 ms we have been using:
+  dt 0.200: self-sustained    -3.7%   odour rate    -3.2%   KC recruited    -8.8%
+  dt 0.050: self-sustained    +3.1%   odour rate    +1.5%   KC recruited    +7.9%
+  dt 0.025: self-sustained    +4.0%   odour rate    +2.2%   KC recruited    +8.4%
+
+wrote out/timestep.json
+
+# exit status: 0
+# finished:    20260913T104614Z

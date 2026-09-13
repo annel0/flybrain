@@ -99,3 +99,60 @@ observable constrains the model without identifying it.
 of the balanced regime or an artefact of 0.5 s windows against ongoing
 activity, and whether APL-dependence survives there. The APL block regression
 test must be rerun at any candidate operating point before it is adopted.
+
+---
+
+## 2026-09-13 — Does the imposed clock change the answers?
+
+**Asked:** raised from outside the session — the simulation advances all
+166,700 neurons in lockstep every 0.1 ms, nothing in the animal does that, and
+that clock is both an artefact and the source of the 8.9x performance ceiling.
+
+Both halves are right, but they are separate problems with separate answers, so
+the artefact was measured rather than argued about. Each timestep is a distinct
+simulation: refractory counter, delay in steps, ring length, membrane and
+synaptic decay factors and the Poisson forcing probability are all recomputed.
+
+| dt (ms) | ring | delay steps | self-sustained Hz | odour Hz | KC recruited | cost |
+|---|---|---|---|---|---|---|
+| 0.200 | 16 | 9 | 0.967 | 0.952 | 5.1% | 0.4x |
+| **0.100** | 32 | 18 | 1.005 | 0.983 | **5.6%** | 0.7x |
+| 0.050 | 64 | 36 | 1.036 | 0.998 | 6.0% | 1.4x |
+| 0.025 | 128 | 72 | 1.045 | 1.005 | 6.1% | 2.8x |
+
+Relative to the 0.1 ms we have been using: -3.7% / +3.1% / +4.0% on the
+self-sustained rate, and -8.8% / +7.9% / +8.4% on Kenyon cell recruitment.
+
+**The sequence converges.** Halving again from 0.05 to 0.025 moves the
+self-sustained rate 0.9%, the odour rate 0.7% and recruitment 1.7% relative.
+The residual error at 0.1 ms against the converged limit is roughly 4% on rates
+and 8% on recruitment, always in the same direction — a coarser step misses
+threshold crossings and reports slightly less activity.
+
+### What that settles
+
+**As an accuracy problem it is small and now bounded.** Four to eight percent,
+systematic, one-directional. Against the things that actually move results —
+the free-parameter weight moved recruitment from 0.2% to 100%, the
+excitation/inhibition balance moved the distance to threshold from 19 to 1.2
+fluctuation widths, non-spiking neurons we cannot represent at all — the clock
+is a rounding error. Every number reported so far survives it.
+
+**As a cost problem it is the whole story, and that was under-sold earlier.**
+The dense per-neuron update is 59% of each step, and there are 10,000 steps per
+simulated second: 1.67 billion membrane updates per second of fly time. Exact
+event-driven integration touches a neuron only when an event reaches it —
+about 25 million events per simulated second at 1 Hz. That is a **65-fold**
+reduction in work, not a marginal gain, and the earlier dismissal of
+event-driven integration named the obstacles (poor GPU parallelism, breaks
+under plasticity and graded neurons) without naming that prize.
+
+### One correction to the framing
+
+"A brain has no reference frequency" is right in general and wrong for the
+circuit we are working in. Odour-evoked oscillations at 20-30 Hz structure
+spike timing in the insect antennal lobe, and Kenyon cells are sensitive to
+their phase; separately, `inx7` gap junctions synchronise antennal lobe
+activity, which we already noted as missing from the model. The olfactory
+system has a rhythm. What it does not have is *our* rhythm — 10 kHz, global,
+and identical for every cell.
