@@ -1,0 +1,10 @@
+# Released connectome data: 1.2 GB of source feather plus the derived graph.
+# Reproduce with src/import_graph.py; provenance is in data/*/source.lock.json.
+data/
+.venv/
+__pycache__/
+*.pyc
+
+# Large run artefacts. Summaries in out/*.json are tracked; frames are not.
+out/*.npz
+out/*.gif
