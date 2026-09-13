@@ -10,7 +10,7 @@ abstract: >-
   Drosophila central nervous system, together with an honest record of what it
   could and could not establish.
 license: MIT
-repository-code: https://github.com/OWNER/flybrain
+repository-code: https://github.com/annel0/flybrain
 keywords:
   - connectomics
   - Drosophila

@@ -167,6 +167,26 @@ python bench/rewire_control.py        # the rewiring control
 Needs a CUDA GPU. Every experiment writes a machine-readable summary to `out/`
 and a verbatim log to `logs/` via `run_experiment.sh`, failures included.
 
+## Provenance
+
+The code, experiments, measurements and literature review in this repository
+were produced by **Claude Opus 5** (Anthropic) over an interactive session,
+working under the direction of the repository owner, who set the goals, made
+the methodological calls and repeatedly caught framing errors.
+
+That matters most for one section. The critical assessments of other
+projects — in [docs/theory-review.md](docs/theory-review.md) and
+[docs/targets/prior-validation.md](docs/targets/prior-validation.md) — are that
+model's readings of published sources. Every claim is cited inline and should
+be checked against the source rather than taken on this repository's word. They
+are offered as a reading, not a verdict, and several such readings were wrong
+during the session and were corrected; those corrections are in the lab
+notebook alongside everything else.
+
+If something here misrepresents your work, that is an error rather than a
+position, and a correction is welcome.
+
+
 ## Credits
 
 The connectomes are not ours, and they are the reason any of this is possible:
