@@ -840,3 +840,112 @@ plasticity. A brain has states — rest, arousal, stress, hunger — and these a
 the cells that set them. Modelled this way the simulation has exactly one
 state, whichever one the parameters happen to produce, and no way to ask which
 state the published measurements were taken in.
+
+---
+
+## 2026-09-14 — Reading someone else's honest account, and finding data we already had
+
+The Virtual Fly Brain workshop for NeuroFly 2026 keeps a page of real questions
+put to its maintainers, each answered with the tools and with an explicit
+account of what the data does *not* say. Two of them land on this project's
+open problems.
+
+### Receptor kinetics: the data does not exist, and now that is settled
+
+Our synapse sign comes from a predicted transmitter with no receptor and no
+kinetics, so one `tau_syn` stands for both ionotropic GABA-A and metabotropic
+GABA-B, which differ by one to two orders of magnitude. The obvious hope was
+that transcriptomics would supply the receptor.
+
+It does not. VFB's own answer: transmitter identity is stored two ways —
+curated class assertions and per-neuron EM predictions — and on the receptor
+side there are **45 neurotransmitter-receptor gene entries with no per-neuron
+receptor expression**. Neuropeptides are never predicted from EM at all,
+because the classifiers cover only small molecules; peptidergic identity
+reaches a connectome neuron solely through its cell-type name mapping to an
+ontology class.
+
+That closes the question rather than answering it. A per-connection receptor
+map is what the model wants and nobody has it — consistent with the finding
+that receptor subunits localise to different domains *within one dendrite*,
+keyed to the presynaptic type, so the quantity is not a property of a cell at
+all.
+
+### How wrong a transmitter prediction can be
+
+Their DNp32 entry is the cleanest illustration we have seen. The same cell,
+reconstructed in four volumes:
+
+| volume | predicted | confidence |
+|---|---|---|
+| FlyWire L / R | dopamine | 51% / 56% |
+| hemibrain | octopamine | 43% |
+| male CNS L / R | serotonin | 58% / 57% |
+| FAFB | — | — |
+
+Three different monoamines at about half confidence, on a cell curated as a
+*myosuppressin peptidergic* neurosecretory neuron. The reading offered — that
+the classifier is responding to dense-core vesicle ultrastructure, which all
+these cell types share — is more plausible than any of the three labels.
+
+Our importer takes `consensus_nt` as fact and gives every modulatory cell sign
++1.
+
+### Which sent us back to our own files
+
+`neurotransmitters.feather` ships ten columns. The importer reads one. Among
+the nine it ignores are `predicted_nt_confidence` and `ground_truth`.
+
+**Confidence.** 99.4% of our neurons carry one. Only 1.5% of connections rest
+on a prediction below 0.5 confidence, and half are above 0.9 — better than
+feared. By the sign we assign: excitatory cells have median confidence 0.962,
+inhibitory 0.831, modulatory 0.874, and the `unclear` bucket 0.528.
+
+**Ground truth.** Available for 85,484 of our 166,700 neurons. Comparing it
+with `consensus_nt` gives 100.0% agreement — which measures nothing, because
+the consensus is *set* to the truth where the truth exists. The honest test is
+the classifier's own column against the truth:
+
+```
+label correct   75,747 of 85,484   88.6%
+sign  correct   79,592 of 85,484   93.1%
+```
+
+The sign is what the model uses, so 93.1% is the number that matters, and
+97.5% of the sign errors are one mode: the classifier said `unclear` and the
+truth was inhibitory.
+
+### A conclusion that survived thirty seconds
+
+That error mode suggests the `unclear` cells — 2,999 of them in our graph,
+588,262 connections, 2.30% of every edge, all given sign +1 — are
+systematically mis-signed. Among ground-truthed cells the classifier called
+`unclear`, **62.9% are inhibitory**. On that number, flipping them to −1 would
+roughly double our hit rate.
+
+The control kills it. The ground-truthed `unclear` cells are **92.4% optic
+lobe** — 39.8% `ol_sensory`, which is photoreceptors, which are histaminergic,
+which is inhibitory. Our 2,999 are 0% `ol_sensory` and 2.4% `ol_intrinsic`;
+they are central-brain intrinsic, nerve-cord sensory, visual projection and
+motor cells. The 62.9% is a fact about photoreceptors, not about our cells.
+
+Reweighting by superclass, over the 39% of our `unclear` cells whose
+superclass has any ground truth at all:
+
+| superclass | ours | with truth | inhibitory |
+|---|---|---|---|
+| cb_sensory | 100 | 328 | 0.0% |
+| cb_intrinsic | 798 | 277 | 14.4% |
+| ol_intrinsic | 73 | 4,802 | 41.5% |
+| vnc_intrinsic | 188 | 77 | 77.9% |
+| **weighted** | | | **25.2%** |
+
+So the +1 default is right about three times in four, not one in three, and a
+blanket flip would have made the model worse. What the table does say is that
+one global default is the wrong shape: the honest inhibitory fraction runs from
+0% to 78% depending on where the cell sits. And 61% of our `unclear` cells are
+in superclasses with no ground-truth coverage at all — for those, nothing here
+applies.
+
+Recorded as a near miss. The first number was clean, large, and pointed at an
+easy fix; the composition check is the only reason it is not in the model now.
