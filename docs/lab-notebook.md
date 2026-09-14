@@ -949,3 +949,101 @@ applies.
 
 Recorded as a near miss. The first number was clean, large, and pointed at an
 easy fix; the composition check is the only reason it is not in the model now.
+
+---
+
+## 2026-09-14 — An inventory of the files, prompted by a fair question
+
+"Look at what is actually in our data — maybe there is a pile of useful columns
+and we simply do not know they exist." There was.
+
+`bench/data_audit.py` lists every field in every source file with its fill
+rate, cardinality and sample values, and marks the ones an importer reads.
+
+| file | columns | read |
+|---|---|---|
+| malecns annotations.feather | 36 | 12 |
+| malecns neurotransmitters.feather | 10 | 2 |
+| malecns edges.feather | 3 | 3 |
+| flywire_annotations.tsv | 31 | 8 |
+| connectivity.parquet | 8 | 3 |
+
+### The ones that change something
+
+**`statusLabel` — proofreading quality, 100% filled, never opened.** We use
+`status` only to drop glia. The finer label says how well each neuron was
+actually reconstructed:
+
+| label | our neurons |
+|---|---|
+| Roughly traced | 43.2% |
+| Reviewed | 32.4% |
+| Prelim Roughly traced | 21.8% |
+| RT Hard to trace | 1.2% |
+| Out of scope | 1.2% |
+| everything else | 0.2% |
+
+Only a third of the model's neurons are reviewed, and a fifth are preliminary.
+Every result in this notebook treats all of them as equally true. Whether the
+unresolved targets move when the graph is restricted to reviewed cells is a
+question this column makes askable, and nothing here has asked it.
+
+**`flywireType` — 85.9% of our neurons carry one, over 8,199 types.** The male
+connectome ships its own mapping to the female one, and we have both datasets
+on disk. The sex comparison that was parked for want of a bridge has had the
+bridge in the file the whole time — not 204 matched *fru*/*dsx* types but
+143,154 neurons.
+
+**FlyWire's transmitter labels are far weaker than the male CNS's.** Male CNS
+`predicted_nt_confidence` has median 0.938, with 1.5% of connections below 0.5.
+FlyWire's `top_nt_conf` has **median 0.686, with 17.1% below 0.5 and 52.5%
+below 0.7**. Over half the signs in the graph we used for the Shiu replication
+rest on a coin-flip-plus-a-bit. That difference between our two datasets was
+invisible because neither confidence column was ever read.
+
+**`known_nt` — literature-curated transmitter for 63.1% of FlyWire cells, with
+a citation in `known_nt_source`.** It is much richer than a single label, and
+three things in it have no representation in our model at all:
+
+- *co-transmission.* "acetylcholine, sNPF" (4,836 cells), "acetylcholine;
+  tachykinin" (1,544), "gaba, nitric oxide" (2,988), "acetylcholine, nitric
+  oxide, dopamine" (980). One cell, two or three transmitters; we give it one
+  sign.
+- *negative results.* "gaba-negative" (4,913), "acetylcholine-negative,
+  glutamate-negative" (1,389). Published evidence that a cell is **not**
+  something, which is exactly the kind of constraint a fit can use and which no
+  single-label column can express.
+- *nitric oxide*, on about 4,400 cells. A gas that diffuses through tissue
+  rather than crossing a synapse — not representable as an edge at all, in our
+  model or in any connectome.
+
+Neuropeptides appear on 7,451 cells under 66 distinct labels.
+
+**`dimorphism`, filled for every FlyWire cell: 99.2% isomorphic.** 652 sexually
+dimorphic, 270 female-specific, 254 potentially either. Under one percent of
+the female brain is annotated as differing between the sexes — a useful check
+on how much a male-versus-female comparison could possibly find.
+
+### And one that is worth nothing
+
+**`receptorType` is empty.** The importer extracts it, `graph.npz` carries it,
+and there is not a single value in the column. It has been part of the
+published data description while containing nothing.
+
+### Also unread, lower value
+
+Cross-references (`vfbId` 95.2%, `hemibrainType` 21.5%, `mancBodyid`/`mancType`
+~2.4%, FlyWire `fbbt_id` 22.1%); developmental lineage (`itoleeHl` 26.0%,
+`trumanHl` 3.8%, and FlyWire's two hemilineage columns near 30%); serial
+homology (`serialMotif`, `mancSerial`, `mcnsSerial`, all under 1%); nerve entry
+and exit; `birthtime` (early/late, 3.0%); `synonyms`, which carries published
+names our type field does not — "Babski 2024: OA-VUMd1" and the rest of the
+octopaminergic VUM cluster among them.
+
+### A false alarm worth recording
+
+The first pass read `weight` as ranging 69–2591 with a median of 96, which
+would have meant our synapse counts were not synapse counts. It was an artefact
+of sampling the first 120,000 rows of a sorted file. Over all 151,856,684 rows
+the weight is 1 at the median, 62.0% of edges are a single synapse, and 84.8%
+are two or fewer. No bug.
