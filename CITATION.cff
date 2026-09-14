@@ -5,6 +5,13 @@ message: >-
   anything from it, cite the connectome releases and the published models it
   replicates -- listed in the README -- rather than this repository.
 type: software
+authors:
+  # The repository owner set the goals, made the methodological calls and
+  # caught the framing errors; the model produced the code, experiments,
+  # measurements and literature review. See the Provenance section of the
+  # README, which states plainly who is answerable for the assessments.
+  - alias: annel0
+  - name: Claude Opus 5 (Anthropic)
 abstract: >-
   A fast GPU simulator for connectome-constrained spiking models of the
   Drosophila central nervous system, together with an honest record of what it
