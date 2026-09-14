@@ -1047,3 +1047,65 @@ would have meant our synapse counts were not synapse counts. It was an artefact
 of sampling the first 120,000 rows of a sorted file. Over all 151,856,684 rows
 the weight is 1 at the median, 62.0% of edges are a single synapse, and 84.8%
 are two or fewer. No bug.
+
+---
+
+## 2026-09-14 — Reading the course itself, and narrowing an overstatement
+
+Yesterday's entry said the receptor question was *closed* by VFB's statement
+that it holds "45 receptor gene entries with no per-neuron receptor
+expression". Reading the workshop's own content specification narrows that
+rather than confirming it.
+
+`DESIGN.md` records a live call: `get_cell_types_by_genes(['Dop1R1'])` returns
+**359 rows in 78 seconds**. The reverse query works. There is no per-*neuron*
+receptor expression, but there is per-*cell-type* expression drawn from
+scRNAseq clusters — and our model assigns properties by cell type anyway, since
+every neuron in the graph carries one. So the door is narrow, not shut: asking
+which cell types express *shakB*, *Rdl* or *Dop1R1* is a query that exists.
+
+Two limits on it, both from the same document. `get_transcriptomic_profile` on
+our own running example, DA1 lPN, comes back **empty** — and their teaching
+point is the general case: connectome cell types and scRNAseq clusters are
+different partitions of the same nervous system and only partly align. A
+`hasScRNAseq` facet says in advance which types have data. Coverage is
+therefore partial and measurable, not assumed.
+
+### What the course is, and what it is not
+
+Seven research questions, each answered five ways, with one neuron type (DA1
+lPN) carried from the first module to the last so the learner accumulates
+identifiers. Discovery, cross-dataset identity, visualisation, connectomics,
+NBLAST, transcriptomics, mini-project.
+
+The Python notebooks are thin — nine or ten cells each, essentially one API
+call per module — and the five reference notebooks carried over from 2024 are
+empty stubs marked "to refresh and validate against the current API". The
+substance is in `DESIGN.md`, which is openly a draft under curator review, and
+in the worked `/questions/` examples.
+
+**It contains nothing about dynamics.** Across the whole repository: no mention
+of gap junctions, electrical synapses, innexins, simulation, spikes, firing
+rates or activity. It is a course in finding and describing neurons, and it
+stops exactly where this project starts.
+
+### Three things worth carrying over anyway
+
+**Datasets overlap, and naive merging double-counts.**
+`get_connected_neurons_by_type` defaults to `exclude_dbs=['hb', 'fafb']`
+because hemibrain and FAFB overlap the other reconstructions. We use male CNS
+and FlyWire separately so nothing is affected now, but it is a trap for any
+future merge.
+
+**Their numbers drift and are dated.** Every figure in `DESIGN.md` is stamped
+2026-08-08. An NBLAST hit count for one neuron went from 107 to 112 between
+2026-07-21 and 2026-08-08 — five hits in three weeks. Any number quoted from a
+live knowledge base needs its date attached, ours included.
+
+**On thresholds, they decline to invent one.** Two of their curator questions
+are worth repeating verbatim in spirit: whether a default weight cut-off of 10
+can be justified at all — "'10 is conventional' is not one I would want to
+write down without a reference" — and, for NBLAST, that a wrong cell type
+appears *among* the correct cross-dataset matches, so the honest answer to
+"what threshold should I use?" is that there is not a clean one. We have made
+the same call twice, on `KC_THRESHOLD_HZ` and on the synapse-count floor.
